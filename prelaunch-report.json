@@ -1,0 +1,433 @@
+{
+  "checkedAt": "2026-03-11T00:01:00.894Z",
+  "totalPaths": 69,
+  "pageResults": [
+    {
+      "path": "/",
+      "status": 200,
+      "notFound": false,
+      "title": "JM-ELEC 91 — Électricien professionnel en Essonne et Île-de-France"
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "notFound": false,
+      "title": "Services — Électricien professionnel | JM-ELEC 91"
+    },
+    {
+      "path": "/services/remplacement-tableau-electrique",
+      "status": 200,
+      "notFound": false,
+      "title": "Remplacement de tableau électrique — JM-ELEC 91"
+    },
+    {
+      "path": "/services/depannage-electrique",
+      "status": 200,
+      "notFound": false,
+      "title": "Dépannage électrique et recherche de panne — JM-ELEC 91"
+    },
+    {
+      "path": "/services/mise-en-securite-conformite",
+      "status": 200,
+      "notFound": false,
+      "title": "Mise en sécurité et conformité électrique — JM-ELEC 91"
+    },
+    {
+      "path": "/services/renovation-electrique",
+      "status": 200,
+      "notFound": false,
+      "title": "Rénovation électrique complète — JM-ELEC 91"
+    },
+    {
+      "path": "/services/borne-recharge-irve",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation borne de recharge IRVE — JM-ELEC 91 certifié IRVE"
+    },
+    {
+      "path": "/services/eclairage-interieur-exterieur",
+      "status": 200,
+      "notFound": false,
+      "title": "Éclairage intérieur et extérieur — JM-ELEC 91"
+    },
+    {
+      "path": "/services/interphonie-controle-acces",
+      "status": 200,
+      "notFound": false,
+      "title": "Interphonie et contrôle d'accès — JM-ELEC 91"
+    },
+    {
+      "path": "/services/domotique-residentielle",
+      "status": 200,
+      "notFound": false,
+      "title": "Domotique résidentielle — JM-ELEC 91"
+    },
+    {
+      "path": "/services/alarme",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation alarme intrusion — JM-ELEC 91"
+    },
+    {
+      "path": "/services/video-surveillance",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation vidéosurveillance — JM-ELEC 91"
+    },
+    {
+      "path": "/services/pac-alimentation-electrique",
+      "status": 200,
+      "notFound": false,
+      "title": "Alimentation électrique pompe à chaleur — JM-ELEC 91"
+    },
+    {
+      "path": "/zones",
+      "status": 200,
+      "notFound": false,
+      "title": "Zones d'intervention — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/bretigny-sur-orge",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Brétigny-sur-Orge (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/corbeil-essonnes",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Corbeil-Essonnes (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/saint-michel-sur-orge",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Saint-Michel-sur-Orge (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/sainte-genevieve-des-bois",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Sainte-Geneviève-des-Bois (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/le-plessis-pate",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien au Plessis-Pâté (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/arpajon",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Arpajon (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/saint-germain-les-arpajon",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Saint-Germain-lès-Arpajon (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/marolles-en-hurepoix",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Marolles-en-Hurepoix (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/leudeville",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Leudeville (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/fleury-merogis",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Fleury-Mérogis (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/longpont-sur-orge",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Longpont-sur-Orge (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/bondoufle",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Bondoufle (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/gif-sur-yvette",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Gif-sur-Yvette (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/saint-aubin",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Saint-Aubin (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/verrieres-le-buisson",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Verrières-le-Buisson (91) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/versailles",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Versailles (78) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/boulogne-billancourt",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Boulogne-Billancourt (92) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/sceaux",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Sceaux (92) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/ville-d-avray",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Ville-d'Avray (92) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/saint-cloud",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Saint-Cloud (92) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/l-etang-la-ville",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à L'Étang-la-Ville (78) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/vaucresson",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Vaucresson (92) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/saint-nom-la-breteche",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Saint-Nom-la-Bretèche (78) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/marnes-la-coquette",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien à Marnes-la-Coquette (92) — JM-ELEC 91"
+    },
+    {
+      "path": "/zones/le-vesinet",
+      "status": 200,
+      "notFound": false,
+      "title": "Électricien au Vésinet (78) — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations",
+      "status": 200,
+      "notFound": false,
+      "title": "Réalisations — JM-ELEC 91 | Exemples d'interventions électriques"
+    },
+    {
+      "path": "/realisations/remplacement-tableau-pavillon-bretigny",
+      "status": 200,
+      "notFound": false,
+      "title": "Remplacement tableau électrique Brétigny-sur-Orge — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/depannage-urgence-corbeil",
+      "status": 200,
+      "notFound": false,
+      "title": "Dépannage électrique urgence Corbeil-Essonnes — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/mise-en-securite-appartement-evry",
+      "status": 200,
+      "notFound": false,
+      "title": "Mise en sécurité électrique appartement Évry — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/borne-irve-maison-individuelle-massy",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation borne de recharge Massy — JM-ELEC 91 certifié IRVE"
+    },
+    {
+      "path": "/realisations/renovation-complete-villa-versailles",
+      "status": 200,
+      "notFound": false,
+      "title": "Rénovation électrique villa Versailles — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/domotique-maison-saint-cloud",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation domotique Saint-Cloud — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/alarme-villa-vaucresson",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation alarme villa Vaucresson — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/eclairage-jardin-le-vesinet",
+      "status": 200,
+      "notFound": false,
+      "title": "Éclairage extérieur jardin Le Vésinet — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/pac-raccordement-gif-sur-yvette",
+      "status": 200,
+      "notFound": false,
+      "title": "Raccordement électrique PAC Gif-sur-Yvette — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/videosurveillance-commerce-arpajon",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation vidéosurveillance commerce Arpajon — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/interphonie-residence-sainte-genevieve",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation vidéophone maison Sainte-Geneviève-des-Bois — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/conformite-pavillon-saint-michel",
+      "status": 200,
+      "notFound": false,
+      "title": "Remplacement différentiel brûlé Saint-Michel-sur-Orge — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/eclairage-interieur-led-verriere",
+      "status": 200,
+      "notFound": false,
+      "title": "Éclairage intérieur LED Verrières-le-Buisson — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/renovation-electrique-pavillon-longpont",
+      "status": 200,
+      "notFound": false,
+      "title": "Rénovation électrique pavillon Longpont-sur-Orge — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/alarme-maison-fleury-merogis",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation alarme maison Fleury-Mérogis — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/borne-irve-22kw-saint-germain",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation borne IRVE 22 kW Saint-Germain-lès-Arpajon — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/videosurveillance-maison-bondoufle",
+      "status": 200,
+      "notFound": false,
+      "title": "Installation vidéosurveillance maison Bondoufle — JM-ELEC 91"
+    },
+    {
+      "path": "/realisations/pac-raccordement-leudeville",
+      "status": 200,
+      "notFound": false,
+      "title": "Raccordement électrique PAC Leudeville — JM-ELEC 91"
+    },
+    {
+      "path": "/avis",
+      "status": 200,
+      "notFound": false,
+      "title": "Avis clients — JM-ELEC 91 | Retours authentiques Google"
+    },
+    {
+      "path": "/a-propos",
+      "status": 200,
+      "notFound": false,
+      "title": "À propos - JM-ELEC 91 | Électricien en Essonne depuis plus de 10 ans"
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "notFound": false,
+      "title": "Contact & Devis gratuit — JM-ELEC 91 | Électricien Essonne"
+    },
+    {
+      "path": "/faq",
+      "status": 200,
+      "notFound": false,
+      "title": "FAQ - Questions fréquentes - JM-ELEC 91"
+    },
+    {
+      "path": "/tarifs",
+      "status": 200,
+      "notFound": false,
+      "title": "Tarifs indicatifs - Électricien en Essonne | JM-ELEC 91"
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "notFound": false,
+      "title": "Blog — Conseils électricité, normes et aides | JM-ELEC 91"
+    },
+    {
+      "path": "/blog/comment-savoir-si-tableau-electrique-vetuste",
+      "status": 200,
+      "notFound": false,
+      "title": "Tableau électrique vétuste : 7 signes à repérer — JM-ELEC 91"
+    },
+    {
+      "path": "/blog/aides-installation-borne-irve-2025",
+      "status": 200,
+      "notFound": false,
+      "title": "Aides borne IRVE 2025 : crédit d'impôt, ADVENIR, TVA réduite — JM-ELEC 91"
+    },
+    {
+      "path": "/blog/norme-nfc-15-100-essentiel",
+      "status": 200,
+      "notFound": false,
+      "title": "Norme NFC 15-100 : guide complet pour votre installation — JM-ELEC 91"
+    },
+    {
+      "path": "/blog/difference-disjoncteur-fusible",
+      "status": 200,
+      "notFound": false,
+      "title": "Disjoncteur vs fusible : différences et lequel choisir — JM-ELEC 91"
+    },
+    {
+      "path": "/blog/prix-renovation-electrique-maison",
+      "status": 200,
+      "notFound": false,
+      "title": "Prix rénovation électrique maison 2025 : tarifs et budget — JM-ELEC 91"
+    }
+  ],
+  "pageErrors": [],
+  "requestFailures": [],
+  "sameOrigin4xx5xx": [],
+  "notFoundOnSitemapPath": [],
+  "externalWarnings": [],
+  "formTest": {
+    "ok": true,
+    "details": "Soumission validée (mock réseau)"
+  },
+  "previewLogs": [
+    "[preview] \n> vite_react_shadcn_ts@0.0.0 preview\n> vite preview --host 127.0.0.1 --port 4178",
+    "[preview]   \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m4178\u001b[22m/\u001b[39m"
+  ]
+}
