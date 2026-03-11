@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 
 import Index from "./pages/Index";
 import Services from "./pages/Services";
@@ -32,6 +33,7 @@ const App = () => (
       <Toaster />
       <BrowserRouter>
         <ScrollToTop />
+        <GoogleAnalytics />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/services" element={<Services />} />

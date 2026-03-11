@@ -47,6 +47,16 @@ If you want to use another provider, override it:
 2. Set `VITE_CONTACT_FORM_ENDPOINT` with your form endpoint URL
 3. Restart the dev server
 
+## Google Analytics (optionnel)
+
+Le site peut envoyer des statistiques d'audience Google Analytics 4 uniquement apres acceptation des cookies.
+
+1. Copiez `.env.example` vers `.env` (en local) ou ajoutez la variable dans Vercel
+2. Renseignez `VITE_GA_MEASUREMENT_ID` avec votre identifiant GA4 (format `G-XXXXXXXXXX`)
+3. Redeployez l'application
+
+Si la variable est vide, aucun script Google Analytics n'est charge.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).

@@ -2,21 +2,30 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+const CONSENT_KEY = "jm-cookie-consent";
+const CONSENT_EVENT = "jm-cookie-consent-updated";
+
 export function CookieBanner() {
   const [state, setState] = useState<"visible" | "hidden">(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("jm-cookie-consent") ? "hidden" : "visible";
+      return localStorage.getItem(CONSENT_KEY) ? "hidden" : "visible";
     }
     return "visible";
   });
 
+  const notifyConsentChange = (value: "accepted" | "refused") => {
+    window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: { value } }));
+  };
+
   const accept = () => {
-    localStorage.setItem("jm-cookie-consent", "accepted");
+    localStorage.setItem(CONSENT_KEY, "accepted");
+    notifyConsentChange("accepted");
     setState("hidden");
   };
 
   const refuse = () => {
-    localStorage.setItem("jm-cookie-consent", "refused");
+    localStorage.setItem(CONSENT_KEY, "refused");
+    notifyConsentChange("refused");
     setState("hidden");
   };
 
@@ -32,11 +41,15 @@ export function CookieBanner() {
       aria-label="Gestion des cookies"
     >
       <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-        Ce site utilise uniquement des cookies essentiels. Aucun traceur publicitaire n'est déposé sans consentement.
+        Ce site utilise des cookies essentiels et, avec votre accord, des cookies de mesure d'audience.
       </p>
       <div className="flex gap-2">
-        <Button variant="cta" size="sm" onClick={accept}>Accepter</Button>
-        <Button variant="outline" size="sm" onClick={refuse}>Refuser</Button>
+        <Button variant="cta" size="sm" onClick={accept}>
+          Accepter
+        </Button>
+        <Button variant="outline" size="sm" onClick={refuse}>
+          Refuser
+        </Button>
       </div>
       <a href="/cookies" className="block mt-2 text-xs text-muted-foreground hover:text-cta transition-colors">
         En savoir plus
