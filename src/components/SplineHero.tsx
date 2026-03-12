@@ -79,29 +79,37 @@ export function SplineHero({
 
       {/* Text & CTA - vertically centered, left side */}
       <div className="relative z-10 flex items-center min-h-screen pt-[72px]">
-        <div className="pl-6 md:pl-16 lg:pl-24 pb-16">
-          <div className="max-w-lg">
-            <p className="text-xs md:text-sm text-cta font-semibold mb-3 tracking-wider uppercase">
+        <div className="w-full px-4 sm:px-6 md:pl-16 lg:pl-24 pb-16">
+          <div className="max-w-lg mx-auto md:mx-0">
+            <p className="text-xs md:text-sm text-cta font-semibold mb-3 tracking-wider uppercase text-center md:text-left">
               Électricien professionnel en Essonne & Île-de-France
             </p>
-            <h1 className="text-sidebar-foreground text-3xl md:text-5xl lg:text-6xl leading-tight">
+            <h1 className="text-sidebar-foreground text-3xl md:text-5xl lg:text-6xl leading-tight text-center md:text-left">
               L'électricité de votre bâtiment,
               <span className="text-cta"> traitée avec rigueur.</span>
             </h1>
-            <p className="text-sm md:text-base text-sidebar-foreground/60 mt-4 leading-relaxed max-w-md">
+            <p className="text-sm md:text-base text-sidebar-foreground/60 mt-4 leading-relaxed max-w-md text-center md:text-left mx-auto md:mx-0">
               Remplacement de tableau, dépannage, mise en conformité, borne IRVE. Réponse sous 24 h.
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-row gap-3 mt-8">
-              <Link to="/contact">
-                <Button variant="cta" size="lg">
+            <div className="flex flex-row gap-2 sm:gap-3 mt-8 items-center justify-center md:justify-start w-full max-w-md mx-auto md:mx-0">
+              <Link to="/contact" className="shrink-0">
+                <Button
+                  variant="cta"
+                  size="lg"
+                  className="h-10 px-4 text-sm sm:h-12 sm:px-8 sm:text-base"
+                >
                   <FileText className="h-4 w-4" />
                   Devis gratuit
                 </Button>
               </Link>
-              <a href="tel:0767973848">
-                <Button variant="ctaOutline" size="lg">
+              <a href="tel:0767973848" className="shrink-0">
+                <Button
+                  variant="ctaOutline"
+                  size="lg"
+                  className="h-10 px-4 text-[13px] sm:h-12 sm:px-8 sm:text-base"
+                >
                   <Phone className="h-4 w-4" />
                   07 67 97 38 48
                 </Button>
@@ -109,7 +117,7 @@ export function SplineHero({
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap gap-x-6 gap-y-2 mt-10">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mt-10 justify-center md:justify-start">
               {trustItems.map(({ icon: Icon, label }) => (
                 <div key={label} className="flex items-center gap-2 text-sidebar-foreground/50">
                   <Icon className="h-4 w-4 text-cta" />
