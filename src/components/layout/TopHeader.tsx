@@ -61,6 +61,38 @@ export function TopHeader() {
   // On home page: transparent header that becomes white on scroll
   // On other pages: always white
   const isTransparent = isHome && !scrolled && !mobileOpen;
+  const chromeColor = isTransparent ? "rgba(24,29,37,0.72)" : "rgba(255,255,255,0.72)";
+  const chromeScheme = isTransparent ? "dark" : "light";
+
+  useEffect(() => {
+    const applyChrome = () => {
+      let themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      if (!themeMeta) {
+        themeMeta = document.createElement("meta");
+        themeMeta.setAttribute("name", "theme-color");
+        document.head.appendChild(themeMeta);
+      }
+      themeMeta.removeAttribute("media");
+      themeMeta.setAttribute("content", chromeColor);
+
+      let schemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+      if (!schemeMeta) {
+        schemeMeta = document.createElement("meta");
+        schemeMeta.setAttribute("name", "color-scheme");
+        document.head.appendChild(schemeMeta);
+      }
+      schemeMeta.setAttribute("content", chromeScheme);
+    };
+
+    applyChrome();
+    const rafId = window.requestAnimationFrame(applyChrome);
+    const timeoutId = window.setTimeout(applyChrome, 120);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [chromeColor, chromeScheme, location.pathname]);
 
   return (
     <header
