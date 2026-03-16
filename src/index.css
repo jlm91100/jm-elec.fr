@@ -67,11 +67,20 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    min-height: 100%;
+    background-color: hsl(var(--background));
   }
 
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100dvh;
+    background-color: hsl(var(--background));
+  }
+
+  #root {
+    min-height: 100dvh;
+    background-color: hsl(var(--background));
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -101,6 +110,7 @@
   .sticky-cta-bar {
     @apply fixed bottom-0 left-0 right-0 z-50 flex md:hidden;
     @apply border-t border-border bg-card/95 backdrop-blur-sm;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .form-input {
