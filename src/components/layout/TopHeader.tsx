@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -64,35 +64,43 @@ export function TopHeader() {
   const chromeColor = isTransparent ? "#181D25" : "#FFFFFF";
   const chromeScheme = isTransparent ? "dark" : "light";
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const applyChrome = () => {
-      let themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-      if (!themeMeta) {
-        themeMeta = document.createElement("meta");
-        themeMeta.setAttribute("name", "theme-color");
-        document.head.appendChild(themeMeta);
-      }
-      themeMeta.removeAttribute("media");
-      themeMeta.setAttribute("content", chromeColor);
+      const head = document.head;
 
-      let schemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+      // Recreate theme-color meta to force Safari to re-read it on SPA updates.
+      const existingThemeMetas = head.querySelectorAll('meta[name="theme-color"]');
+      existingThemeMetas.forEach((meta) => meta.remove());
+
+      const themeMeta = document.createElement("meta");
+      themeMeta.setAttribute("name", "theme-color");
+      themeMeta.setAttribute("content", chromeColor);
+      head.appendChild(themeMeta);
+
+      let schemeMeta = head.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
       if (!schemeMeta) {
         schemeMeta = document.createElement("meta");
         schemeMeta.setAttribute("name", "color-scheme");
-        document.head.appendChild(schemeMeta);
+        head.appendChild(schemeMeta);
       }
       schemeMeta.setAttribute("content", chromeScheme);
+
+      // Safari may derive UI chrome from document background.
+      document.documentElement.style.backgroundColor = chromeColor;
+      document.body.style.backgroundColor = chromeColor;
+      document.documentElement.style.colorScheme = chromeScheme;
+      document.body.style.colorScheme = chromeScheme;
     };
 
     applyChrome();
     const rafId = window.requestAnimationFrame(applyChrome);
-    const timeoutId = window.setTimeout(applyChrome, 120);
+    const timeoutId = window.setTimeout(applyChrome, 140);
 
     return () => {
       window.cancelAnimationFrame(rafId);
       window.clearTimeout(timeoutId);
     };
-  }, [chromeColor, chromeScheme, location.pathname]);
+  }, [chromeColor, chromeScheme, location.pathname, scrolled, mobileOpen]);
 
   return (
     <header
