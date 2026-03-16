@@ -1,0 +1,15 @@
+# Disavow file for jm-elec.fr
+# Generated on 2026-03-16
+# Scope: domains identified as low-quality/spam-like from audit report
+# Upload in Google Disavow Tool (property: https://jm-elec.fr/)
+
+domain:atomizelink.icu
+domain:bye.fyi
+domain:drjack.world
+domain:quero.party
+domain:takes.sbs
+domain:wants.cfd
+domain:seo-tip.com
+domain:spottt.com
+domain:kawa-kun.com
+domain:actu-blog.infos.st
