@@ -6,6 +6,7 @@ const CONSENT_KEY = "jm-cookie-consent";
 const CONSENT_EVENT = "jm-cookie-consent-updated";
 
 const initializedMeasurementIds = new Set<string>();
+let consentDefaultInitialized = false;
 
 declare global {
   interface Window {
@@ -19,7 +20,7 @@ function hasAnalyticsConsent() {
   return localStorage.getItem(CONSENT_KEY) === "accepted";
 }
 
-function ensureGtagInitialized(measurementId: string) {
+function ensureGtagInitialized(measurementId: string, consentGranted: boolean) {
   window.dataLayer = window.dataLayer || [];
   window.gtag =
     window.gtag ||
@@ -27,12 +28,31 @@ function ensureGtagInitialized(measurementId: string) {
       window.dataLayer.push(args);
     };
 
+  if (!consentDefaultInitialized) {
+    window.gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "denied",
+    });
+    consentDefaultInitialized = true;
+  }
+
+  window.gtag("consent", "update", {
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    analytics_storage: consentGranted ? "granted" : "denied",
+  });
+
   if (initializedMeasurementIds.has(measurementId)) return;
 
   window.gtag("js", new Date());
   window.gtag("config", measurementId, {
     anonymize_ip: true,
     send_page_view: false,
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
   });
   initializedMeasurementIds.add(measurementId);
 }
@@ -63,6 +83,9 @@ export function GoogleAnalytics() {
 
     if (!consentGranted) {
       window[`ga-disable-${measurementId}`] = true;
+      if (window.gtag) {
+        ensureGtagInitialized(measurementId, false);
+      }
       setIsReady(false);
       return;
     }
@@ -70,7 +93,7 @@ export function GoogleAnalytics() {
     window[`ga-disable-${measurementId}`] = false;
 
     const onReady = () => {
-      ensureGtagInitialized(measurementId);
+      ensureGtagInitialized(measurementId, true);
       setIsReady(true);
     };
 
@@ -91,10 +114,13 @@ export function GoogleAnalytics() {
   useEffect(() => {
     if (!measurementId || !consentGranted || !isReady || !window.gtag) return;
 
-    window.gtag("event", "page_view", {
+    window.gtag("config", measurementId, {
       page_path: `${pathname}${search}`,
       page_title: document.title,
       page_location: window.location.href,
+      anonymize_ip: true,
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
     });
   }, [measurementId, consentGranted, isReady, pathname, search]);
 
