@@ -25,7 +25,7 @@ const serviceImages: Record<string, string> = {
   "mise-en-securite-conformite": "/images/services/mise-en-securite-conformite-16-9.webp",
   "renovation-electrique": "/images/services/renovation-electrique-16-9.webp",
   "borne-recharge-irve": "/images/services/borne-recharge-irve-16-9.webp",
-  "eclairage-interieur-exterieur": "/images/services/eclairage-interieur-exterieur-16-9.jpg",
+  "eclairage-interieur-exterieur": "/images/services/eclairage-interieur-exterieur-16-9.webp",
   "interphonie-controle-acces": "/images/services/interphonie-controle-acces-16-9.webp",
   "domotique-residentielle": "/images/services/domotique-residentielle-16-9.webp",
   "alarme": "/images/services/alarme-16-9.webp",
@@ -39,7 +39,7 @@ const serviceDetailImages: Record<string, string> = {
   "mise-en-securite-conformite": "/images/services/mise-en-securite-conformite-4-3.webp",
   "renovation-electrique": "/images/services/renovation-electrique-4-3.webp",
   "borne-recharge-irve": "/images/services/borne-recharge-irve-4-3.webp",
-  "eclairage-interieur-exterieur": "/images/services/eclairage-interieur-exterieur-4-3.jpg",
+  "eclairage-interieur-exterieur": "/images/services/eclairage-interieur-exterieur-4-3.webp",
   "interphonie-controle-acces": "/images/services/interphonie-controle-acces-4-3.webp",
   "domotique-residentielle": "/images/services/domotique-residentielle-4-3.webp",
   "alarme": "/images/services/alarme-4-3.webp",
@@ -1017,9 +1017,9 @@ export const services: ServiceData[] = [
 export function getService(slug: string): (ServiceData & { image: string }) | undefined {
   const s = services.find((service) => service.slug === slug);
   if (!s) return undefined;
-  return { ...s, image: serviceDetailImages[s.slug] || "/images/services/tableau-electrique.jpg" };
+  return { ...s, image: serviceDetailImages[s.slug] || "/images/services/tableau-electrique.webp" };
 }
 
 export function getServiceImage(slug: string): string {
-  return serviceImages[slug] || "/images/services/tableau-electrique.jpg";
+  return serviceImages[slug] || "/images/services/tableau-electrique.webp";
 }

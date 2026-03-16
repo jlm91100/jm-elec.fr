@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, FileText, Shield, Zap, Clock, Award } from "lucide-react";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
+type ConnectionLike = { saveData?: boolean; effectiveType?: string };
 
 const trustItems = [
   { icon: Shield, label: "Assurance décennale" },
@@ -21,6 +22,7 @@ export function SplineHero({
 }: SplineHeroProps) {
   const [shouldLoad, setShouldLoad] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [disableHeavyHero, setDisableHeavyHero] = useState(false);
   const [hasError, setHasError] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +32,21 @@ export function SplineHero({
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    const mobileMq = window.matchMedia("(max-width: 767px)");
+    const update = () => {
+      const connection = (navigator as Navigator & { connection?: ConnectionLike }).connection;
+      const lowBandwidth =
+        Boolean(connection?.saveData) || /(^|-)2g/.test(connection?.effectiveType || "");
+      setDisableHeavyHero(mobileMq.matches || lowBandwidth);
+    };
+
+    update();
+    mobileMq.addEventListener?.("change", update);
+    return () => mobileMq.removeEventListener?.("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (prefersReducedMotion || disableHeavyHero) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -42,9 +58,9 @@ export function SplineHero({
     );
     if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, disableHeavyHero]);
 
-  const showSpline = shouldLoad && !prefersReducedMotion && !hasError;
+  const showSpline = shouldLoad && !prefersReducedMotion && !disableHeavyHero && !hasError;
 
   return (
     <section
