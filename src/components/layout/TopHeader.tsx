@@ -43,6 +43,14 @@ export function TopHeader() {
           : "bg-card/95 backdrop-blur-md shadow-sm border-b border-border"
       )}
     >
+      {/* iOS safe-area top strip (heure/batterie) */}
+      <div
+        className={cn(
+          "pointer-events-none absolute left-0 right-0 top-0 h-[env(safe-area-inset-top)]",
+          isTransparent ? "bg-sidebar" : "bg-card/95"
+        )}
+        aria-hidden="true"
+      />
       <div className="wide-container flex items-center justify-between h-[72px]">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 flex-shrink-0" aria-label="JM-ELEC 91 — Accueil">
