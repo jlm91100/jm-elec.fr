@@ -14,18 +14,18 @@ import { ensureEmbedSocialWidgets } from "@/lib/embedSocial";
 import { ArrowRight, Shield, Zap, Clock, Award, MapPin } from "lucide-react";
 
 const pillars = [
-  { icon: Shield, label: "Assurance dÃ©cennale", detail: "Tous vos travaux sont garantis." },
+  { icon: Shield, label: "Assurance décennale", detail: "Tous vos travaux sont garantis." },
   { icon: Zap, label: "Certification IRVE", detail: "Bornes de recharge conformes." },
-  { icon: Clock, label: "10 ans d'expÃ©rience", detail: "Diagnostic rigoureux, exÃ©cution propre." },
-  { icon: Award, label: "NFC 15-100", detail: "ConformitÃ© garantie." },
+  { icon: Clock, label: "10 ans d'expérience", detail: "Diagnostic rigoureux, exécution propre." },
+  { icon: Award, label: "NFC 15-100", detail: "Conformité garantie." },
 ];
 
 const processSteps = [
-  { num: "01", title: "Vous nous contactez", detail: "Par tÃ©lÃ©phone ou formulaire. RÃ©ponse sous 24 h." },
-  { num: "02", title: "Diagnostic sur site", detail: "Nous Ã©valuons votre installation et vos besoins." },
-  { num: "03", title: "Devis dÃ©taillÃ©", detail: "Chiffrage transparent, ligne par ligne. Sans surprise." },
-  { num: "04", title: "Intervention", detail: "Travaux propres, matÃ©riel de qualitÃ©, conformitÃ©." },
-  { num: "05", title: "VÃ©rification & remise", detail: "Tests, attestation, nettoyage du chantier." },
+  { num: "01", title: "Vous nous contactez", detail: "Par téléphone ou formulaire. Réponse sous 24 h." },
+  { num: "02", title: "Diagnostic sur site", detail: "Nous évaluons votre installation et vos besoins." },
+  { num: "03", title: "Devis détaillé", detail: "Chiffrage transparent, ligne par ligne. Sans surprise." },
+  { num: "04", title: "Intervention", detail: "Travaux propres, matériel de qualité, conformité." },
+  { num: "05", title: "Vérification & remise", detail: "Tests, attestation, nettoyage du chantier." },
 ];
 
 
@@ -67,10 +67,10 @@ export default function HomePage() {
         <div className="bg-cta/5 border border-cta/10 rounded-2xl p-8 md:p-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: "10+", label: "annÃ©es d'expÃ©rience" },
-              { value: "500+", label: "interventions rÃ©alisÃ©es" },
-              { value: "5â˜…", label: "note Google" },
-              { value: "24h", label: "dÃ©lai de rÃ©ponse" },
+              { value: "10+", label: "années d'expérience" },
+              { value: "500+", label: "interventions réalisées" },
+              { value: "5★", label: "note Google" },
+              { value: "24h", label: "délai de réponse" },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-3xl md:text-4xl font-heading font-bold text-cta">{stat.value}</p>
@@ -83,22 +83,22 @@ export default function HomePage() {
 
       <div className="section-divider wide-container" />
 
-      {/* Editorial SEO â€” Expertise */}
+      {/* Editorial SEO — Expertise */}
       <section className="wide-container py-20">
         <div className="max-w-3xl">
-          <h2 className="mb-6">Votre Ã©lectricien de confiance en Essonne et ÃŽle-de-France</h2>
+          <h2 className="mb-6">Votre électricien de confiance en Essonne et Île-de-France</h2>
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
-              JM-ELEC 91 est une entreprise d'Ã©lectricitÃ© fondÃ©e il y a plus de 10 ans en Essonne. Notre activitÃ© repose sur trois piliers : le <Link to="/services/remplacement-tableau-electrique" className="text-cta hover:underline">remplacement de tableau Ã©lectrique</Link>, le <Link to="/services/depannage-electrique" className="text-cta hover:underline">dÃ©pannage</Link> et la <Link to="/services/mise-en-securite-conformite" className="text-cta hover:underline">mise en conformitÃ©</Link>. Ce sont les interventions que les particuliers nous demandent le plus â€” et celles oÃ¹ notre expÃ©rience fait la diffÃ©rence.
+              JM-ELEC 91 est une entreprise d'électricité fondée il y a plus de 10 ans en Essonne. Notre activité repose sur trois piliers : le <Link to="/services/remplacement-tableau-electrique" className="text-cta hover:underline">remplacement de tableau électrique</Link>, le <Link to="/services/depannage-electrique" className="text-cta hover:underline">dépannage</Link> et la <Link to="/services/mise-en-securite-conformite" className="text-cta hover:underline">mise en conformité</Link>. Ce sont les interventions que les particuliers nous demandent le plus — et celles où notre expérience fait la différence.
             </p>
             <p>
-              Un tableau Ã  fusibles qui n'a pas Ã©tÃ© touchÃ© depuis 30 ans, un disjoncteur qui saute Ã  chaque utilisation du four, un diagnostic immobilier qui relÃ¨ve 6 anomalies : ce sont des situations concrÃ¨tes que nous rencontrons chaque semaine. Nous y rÃ©pondons avec un diagnostic honnÃªte, un devis dÃ©taillÃ© ligne par ligne, et des travaux rÃ©alisÃ©s dans les rÃ¨gles de l'art.
+              Un tableau à fusibles qui n'a pas été touché depuis 30 ans, un disjoncteur qui saute à chaque utilisation du four, un diagnostic immobilier qui relève 6 anomalies : ce sont des situations concrètes que nous rencontrons chaque semaine. Nous y répondons avec un diagnostic honnête, un devis détaillé ligne par ligne, et des travaux réalisés dans les règles de l'art.
             </p>
             <p>
-              Nous ne sommes pas une plateforme, pas un rÃ©seau national. Nous sommes une entreprise locale, basÃ©e en Essonne, qui connaÃ®t le parc immobilier de la rÃ©gion. Les pavillons des annÃ©es 70-80 de <Link to="/zones/bretigny-sur-orge" className="text-cta hover:underline">BrÃ©tigny-sur-Orge</Link> et <Link to="/zones/saint-michel-sur-orge" className="text-cta hover:underline">Saint-Michel-sur-Orge</Link>, les immeubles du centre de <Link to="/zones/corbeil-essonnes" className="text-cta hover:underline">Corbeil-Essonnes</Link>, les maisons de <Link to="/zones/gif-sur-yvette" className="text-cta hover:underline">Gif-sur-Yvette</Link> â€” nous les connaissons et nous savons quoi y trouver.
+              Nous ne sommes pas une plateforme, pas un réseau national. Nous sommes une entreprise locale, basée en Essonne, qui connaît le parc immobilier de la région. Les pavillons des années 70-80 de <Link to="/zones/bretigny-sur-orge" className="text-cta hover:underline">Brétigny-sur-Orge</Link> et <Link to="/zones/saint-michel-sur-orge" className="text-cta hover:underline">Saint-Michel-sur-Orge</Link>, les immeubles du centre de <Link to="/zones/corbeil-essonnes" className="text-cta hover:underline">Corbeil-Essonnes</Link>, les maisons de <Link to="/zones/gif-sur-yvette" className="text-cta hover:underline">Gif-sur-Yvette</Link> — nous les connaissons et nous savons quoi y trouver.
             </p>
             <p>
-              Notre engagement : un travail propre, du matÃ©riel de marque (Schneider, Legrand, Hager), une attestation de conformitÃ© systÃ©matique, et un chantier nettoyÃ© Ã  la fin de chaque intervention. Pas de sous-traitance, pas de surprise sur la facture.
+              Notre engagement : un travail propre, du matériel de marque (Schneider, Legrand, Hager), une attestation de conformité systématique, et un chantier nettoyé à la fin de chaque intervention. Pas de sous-traitance, pas de surprise sur la facture.
             </p>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default function HomePage() {
         <div className="text-center mb-12">
           <h2 className="mb-3">Nos interventions</h2>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            Chaque service repose sur un processus rigoureux, des matÃ©riaux de qualitÃ© et une traÃ§abilitÃ© complÃ¨te.
+            Chaque service repose sur un processus rigoureux, des matériaux de qualité et une traçabilité complète.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -147,9 +147,9 @@ export default function HomePage() {
       {/* Process */}
       <section className="wide-container py-20">
         <div className="text-center mb-12">
-          <h2 className="mb-3">Notre mÃ©thode</h2>
+          <h2 className="mb-3">Notre méthode</h2>
           <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-            Un processus clair et structurÃ©, de votre premier appel Ã  la remise de l'attestation.
+            Un processus clair et structuré, de votre premier appel à la remise de l'attestation.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -169,7 +169,7 @@ export default function HomePage() {
       <section className="wide-container py-20">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="mb-2">RÃ©alisations rÃ©centes</h2>
+            <h2 className="mb-2">Réalisations récentes</h2>
             <p className="text-sm text-muted-foreground">Exemples concrets de nos interventions.</p>
           </div>
           <Link to="/realisations" className="hidden md:inline-flex">
@@ -196,7 +196,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="p-5">
-                  <p className="text-xs text-muted-foreground mb-2">{r.date} Â· {r.city}</p>
+                  <p className="text-xs text-muted-foreground mb-2">{r.date} · {r.city}</p>
                   <h4 className="text-base mb-2 group-hover:text-cta transition-colors">{r.title}</h4>
                   <p className="text-sm text-muted-foreground line-clamp-2">{r.description}</p>
                 </div>
@@ -207,7 +207,7 @@ export default function HomePage() {
         <div className="mt-6 md:hidden">
           <Link to="/realisations">
             <Button variant="outline" size="sm" className="w-full">
-              Toutes les rÃ©alisations <ArrowRight className="h-3 w-3" />
+              Toutes les réalisations <ArrowRight className="h-3 w-3" />
             </Button>
           </Link>
         </div>
@@ -215,7 +215,7 @@ export default function HomePage() {
 
       <div className="section-divider wide-container" />
 
-      {/* Testimonials â€” EmbedSocial Widget */}
+      {/* Testimonials — EmbedSocial Widget */}
       <section className="wide-container py-20">
         <div className="text-center mb-8">
           <h2 className="mb-3">Ce que disent nos clients</h2>
@@ -267,19 +267,19 @@ export default function HomePage() {
 
       <div className="section-divider wide-container" />
 
-      {/* Editorial SEO â€” Engagement */}
+      {/* Editorial SEO — Engagement */}
       <section className="wide-container py-16">
         <div className="max-w-3xl mx-auto">
-          <h2 className="mb-6">Pourquoi faire appel Ã  un Ã©lectricien professionnel ?</h2>
+          <h2 className="mb-6">Pourquoi faire appel à un électricien professionnel ?</h2>
           <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
-              L'Ã©lectricitÃ© n'est pas un domaine oÃ¹ l'improvisation a sa place. Une installation mal rÃ©alisÃ©e peut entraÃ®ner des risques graves : incendie, Ã©lectrocution, dommages aux Ã©quipements. En France, les installations Ã©lectriques dÃ©faillantes sont Ã  l'origine de plus de 50 000 incendies domestiques par an.
+              L'électricité n'est pas un domaine où l'improvisation a sa place. Une installation mal réalisée peut entraîner des risques graves : incendie, électrocution, dommages aux équipements. En France, les installations électriques défaillantes sont à l'origine de plus de 50 000 incendies domestiques par an.
             </p>
             <p>
-              Faire appel Ã  un Ã©lectricien professionnel, c'est s'assurer que les travaux respectent la norme NFC 15-100 en vigueur, que le matÃ©riel utilisÃ© est de qualitÃ©, et que l'installation est sÃ©curisÃ©e pour les annÃ©es Ã  venir. C'est aussi bÃ©nÃ©ficier d'une assurance dÃ©cennale qui couvre les travaux en cas de problÃ¨me.
+              Faire appel à un électricien professionnel, c'est s'assurer que les travaux respectent la norme NFC 15-100 en vigueur, que le matériel utilisé est de qualité, et que l'installation est sécurisée pour les années à venir. C'est aussi bénéficier d'une assurance décennale qui couvre les travaux en cas de problème.
             </p>
             <p>
-              Chez JM-ELEC 91, nous ne faisons pas de travaux inutiles. Si votre installation est saine, nous vous le dirons. Si des travaux sont nÃ©cessaires, nous vous expliquerons pourquoi et nous vous proposerons un devis transparent. C'est cette honnÃªtetÃ© qui fait la confiance de nos clients â€” et qui explique que la majoritÃ© de nos nouveaux clients viennent par recommandation.
+              Chez JM-ELEC 91, nous ne faisons pas de travaux inutiles. Si votre installation est saine, nous vous le dirons. Si des travaux sont nécessaires, nous vous expliquerons pourquoi et nous vous proposerons un devis transparent. C'est cette honnêteté qui fait la confiance de nos clients — et qui explique que la majorité de nos nouveaux clients viennent par recommandation.
             </p>
           </div>
         </div>

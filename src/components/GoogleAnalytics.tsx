@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 const GA_SCRIPT_ID = "GoogleAnalyticsScript";
 const CONSENT_KEY = "jm-cookie-consent";
 const CONSENT_EVENT = "jm-cookie-consent-updated";
+const DEFAULT_MEASUREMENT_ID = "G-FR4KW56P1J";
 
 const initializedMeasurementIds = new Set<string>();
 let consentDefaultInitialized = false;
@@ -59,7 +60,9 @@ function ensureGtagInitialized(measurementId: string, consentGranted: boolean) {
 
 export function GoogleAnalytics() {
   const { pathname, search } = useLocation();
-  const measurementId = (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim();
+  const measurementId =
+    (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim() ||
+    DEFAULT_MEASUREMENT_ID;
   const [isReady, setIsReady] = useState(false);
   const [consentGranted, setConsentGranted] = useState(() =>
     typeof window !== "undefined" ? hasAnalyticsConsent() : false
