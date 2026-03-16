@@ -20,16 +20,20 @@ function hasAnalyticsConsent() {
   return localStorage.getItem(CONSENT_KEY) === "accepted";
 }
 
-function ensureGtagInitialized(measurementId: string, consentGranted: boolean) {
+function ensureGtagQueue() {
   window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
+  if (!window.gtag) {
+    window.gtag = (function gtag() {
+      window.dataLayer.push(arguments);
+    } as unknown) as (...args: unknown[]) => void;
+  }
+}
+
+function ensureGtagInitialized(measurementId: string, consentGranted: boolean) {
+  ensureGtagQueue();
 
   if (!consentDefaultInitialized) {
-    window.gtag("consent", "default", {
+    window.gtag?.("consent", "default", {
       ad_storage: "denied",
       ad_user_data: "denied",
       ad_personalization: "denied",
@@ -38,7 +42,7 @@ function ensureGtagInitialized(measurementId: string, consentGranted: boolean) {
     consentDefaultInitialized = true;
   }
 
-  window.gtag("consent", "update", {
+  window.gtag?.("consent", "update", {
     ad_storage: "denied",
     ad_user_data: "denied",
     ad_personalization: "denied",
@@ -47,8 +51,8 @@ function ensureGtagInitialized(measurementId: string, consentGranted: boolean) {
 
   if (initializedMeasurementIds.has(measurementId)) return;
 
-  window.gtag("js", new Date());
-  window.gtag("config", measurementId, {
+  window.gtag?.("js", new Date());
+  window.gtag?.("config", measurementId, {
     anonymize_ip: true,
     send_page_view: false,
     allow_google_signals: false,
@@ -62,7 +66,6 @@ export function GoogleAnalytics() {
   const measurementId =
     (import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined)?.trim() ||
     DEFAULT_MEASUREMENT_ID;
-  const [isReady, setIsReady] = useState(false);
   const [consentGranted, setConsentGranted] = useState(() =>
     typeof window !== "undefined" ? hasAnalyticsConsent() : false
   );
@@ -83,43 +86,31 @@ export function GoogleAnalytics() {
   useEffect(() => {
     if (!measurementId) return;
 
-    if (!consentGranted) {
-      if (window.gtag) {
-        ensureGtagInitialized(measurementId, false);
-      }
-      setIsReady(false);
-      return;
-    }
-
-    const onReady = () => {
-      ensureGtagInitialized(measurementId, true);
-      setIsReady(true);
-    };
+    // Build the gtag queue before loading the script.
+    ensureGtagInitialized(measurementId, consentGranted);
 
     const existing = document.getElementById(GA_SCRIPT_ID) as HTMLScriptElement | null;
-    if (existing) {
-      onReady();
-      return;
-    }
+    if (existing) return;
 
     const script = document.createElement("script");
     script.id = GA_SCRIPT_ID;
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-    script.onload = onReady;
     document.head.appendChild(script);
   }, [measurementId, consentGranted]);
 
   useEffect(() => {
-    if (!measurementId || !consentGranted || !isReady || !window.gtag) return;
+    if (!measurementId || !consentGranted) return;
 
-    window.gtag("event", "page_view", {
+    ensureGtagQueue();
+
+    window.gtag?.("event", "page_view", {
       send_to: measurementId,
       page_path: `${pathname}${search}`,
       page_title: document.title,
       page_location: window.location.href,
     });
-  }, [measurementId, consentGranted, isReady, pathname, search]);
+  }, [measurementId, consentGranted, pathname, search]);
 
   return null;
 }
