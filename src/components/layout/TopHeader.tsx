@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -35,24 +35,57 @@ export function TopHeader() {
   // On home page: transparent header that becomes white on scroll
   // On other pages: always white
   const isTransparent = isHome && !scrolled && !mobileOpen;
+  const chromeColor = isTransparent ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+  const chromeScheme = isTransparent ? "dark" : "light";
 
-  useEffect(() => {
-    const color = isHome ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
-    const scheme = isHome ? "dark" : "light";
-    const metas = document.querySelectorAll('meta[name="theme-color"]');
-    metas.forEach((meta) => {
-      meta.setAttribute("content", color);
-    });
-    const schemeMeta = document.querySelector('meta[name="color-scheme"]');
-    if (schemeMeta) {
-      schemeMeta.setAttribute("content", scheme);
-    }
+  useLayoutEffect(() => {
+    const head = document.head;
 
-    // Safari peut parfois utiliser la couleur de fond de la page
-    // pour la zone système; on synchronise donc html/body à la route.
-    document.documentElement.style.backgroundColor = color;
-    document.body.style.backgroundColor = color;
-  }, [isHome]);
+    const applyBrowserChromeColor = () => {
+      const themeMetas = Array.from(
+        document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      );
+
+      let primaryThemeMeta = themeMetas.find((meta) => !meta.getAttribute("media"));
+      if (!primaryThemeMeta) {
+        primaryThemeMeta = document.createElement("meta");
+        primaryThemeMeta.setAttribute("name", "theme-color");
+        head.appendChild(primaryThemeMeta);
+      }
+      primaryThemeMeta.removeAttribute("media");
+      primaryThemeMeta.setAttribute("content", chromeColor);
+
+      // Keep one theme-color meta only to avoid Safari conflicts.
+      themeMetas.forEach((meta) => {
+        if (meta !== primaryThemeMeta) {
+          meta.remove();
+        }
+      });
+
+      let schemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+      if (!schemeMeta) {
+        schemeMeta = document.createElement("meta");
+        schemeMeta.setAttribute("name", "color-scheme");
+        head.appendChild(schemeMeta);
+      }
+      schemeMeta.setAttribute("content", chromeScheme);
+
+      // Sync browser chrome with header color state.
+      document.documentElement.style.backgroundColor = chromeColor;
+      document.body.style.backgroundColor = chromeColor;
+      document.documentElement.style.colorScheme = chromeScheme;
+      document.body.style.colorScheme = chromeScheme;
+    };
+
+    applyBrowserChromeColor();
+    const rafId = window.requestAnimationFrame(applyBrowserChromeColor);
+    const timerId = window.setTimeout(applyBrowserChromeColor, 120);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timerId);
+    };
+  }, [chromeColor, chromeScheme, location.pathname]);
 
   return (
     <header
@@ -67,7 +100,7 @@ export function TopHeader() {
       <div
         className={cn(
           "pointer-events-none absolute left-0 right-0 top-0 h-[env(safe-area-inset-top)]",
-          isHome ? "bg-sidebar" : "bg-card"
+          isTransparent ? "bg-sidebar" : "bg-card"
         )}
         aria-hidden="true"
       />
