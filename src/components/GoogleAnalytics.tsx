@@ -117,13 +117,11 @@ export function GoogleAnalytics() {
   useEffect(() => {
     if (!measurementId || !consentGranted || !isReady || !window.gtag) return;
 
-    window.gtag("config", measurementId, {
+    window.gtag("event", "page_view", {
+      send_to: measurementId,
       page_path: `${pathname}${search}`,
       page_title: document.title,
       page_location: window.location.href,
-      anonymize_ip: true,
-      allow_google_signals: false,
-      allow_ad_personalization_signals: false,
     });
   }, [measurementId, consentGranted, isReady, pathname, search]);
 
