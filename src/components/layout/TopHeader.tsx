@@ -42,6 +42,11 @@ export function TopHeader() {
     metas.forEach((meta) => {
       meta.setAttribute("content", color);
     });
+
+    // Safari peut parfois utiliser la couleur de fond de la page
+    // pour la zone système; on synchronise donc html/body à la route.
+    document.documentElement.style.backgroundColor = color;
+    document.body.style.backgroundColor = color;
   }, [isHome]);
 
   return (
@@ -57,7 +62,7 @@ export function TopHeader() {
       <div
         className={cn(
           "pointer-events-none absolute left-0 right-0 top-0 h-[env(safe-area-inset-top)]",
-          isTransparent ? "bg-sidebar" : "bg-card"
+          isHome ? "bg-sidebar" : "bg-card"
         )}
         aria-hidden="true"
       />
