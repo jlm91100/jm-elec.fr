@@ -38,10 +38,15 @@ export function TopHeader() {
 
   useEffect(() => {
     const color = isHome ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+    const scheme = isHome ? "dark" : "light";
     const metas = document.querySelectorAll('meta[name="theme-color"]');
     metas.forEach((meta) => {
       meta.setAttribute("content", color);
     });
+    const schemeMeta = document.querySelector('meta[name="color-scheme"]');
+    if (schemeMeta) {
+      schemeMeta.setAttribute("content", scheme);
+    }
 
     // Safari peut parfois utiliser la couleur de fond de la page
     // pour la zone système; on synchronise donc html/body à la route.

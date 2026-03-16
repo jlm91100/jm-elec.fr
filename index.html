@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#111827" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#111827" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111827" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="light" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -27,9 +27,14 @@
         var light = "#faf9f6";
         var isHome = window.location.pathname === "/";
         var color = isHome ? dark : light;
+        var scheme = isHome ? "dark" : "light";
         var metas = document.querySelectorAll('meta[name="theme-color"]');
         for (var i = 0; i < metas.length; i += 1) {
           metas[i].setAttribute("content", color);
+        }
+        var schemeMeta = document.querySelector('meta[name="color-scheme"]');
+        if (schemeMeta) {
+          schemeMeta.setAttribute("content", scheme);
         }
       })();
     </script>
