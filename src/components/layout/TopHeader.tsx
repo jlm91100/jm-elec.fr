@@ -61,7 +61,7 @@ export function TopHeader() {
   // On home page: transparent header that becomes white on scroll
   // On other pages: always white
   const isTransparent = isHome && !scrolled && !mobileOpen;
-  const chromeColor = isTransparent ? "rgba(24,29,37,0.72)" : "rgba(255,255,255,0.72)";
+  const chromeColor = isTransparent ? "#181D25" : "#FFFFFF";
   const chromeScheme = isTransparent ? "dark" : "light";
 
   useEffect(() => {

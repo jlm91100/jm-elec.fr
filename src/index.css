@@ -108,9 +108,9 @@
   }
 
   .sticky-cta-bar {
-    @apply fixed bottom-0 left-0 right-0 z-50 flex md:hidden;
+    @apply fixed bottom-0 left-0 right-0 z-50 md:hidden pointer-events-none;
     @apply bg-transparent;
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
   }
 
   .form-input {
