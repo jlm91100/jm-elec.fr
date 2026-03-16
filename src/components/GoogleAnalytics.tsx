@@ -13,7 +13,6 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag?: (...args: unknown[]) => void;
-    [key: `ga-disable-${string}`]: boolean | undefined;
   }
 }
 
@@ -85,15 +84,12 @@ export function GoogleAnalytics() {
     if (!measurementId) return;
 
     if (!consentGranted) {
-      window[`ga-disable-${measurementId}`] = true;
       if (window.gtag) {
         ensureGtagInitialized(measurementId, false);
       }
       setIsReady(false);
       return;
     }
-
-    window[`ga-disable-${measurementId}`] = false;
 
     const onReady = () => {
       ensureGtagInitialized(measurementId, true);
