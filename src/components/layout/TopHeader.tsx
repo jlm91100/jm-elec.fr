@@ -62,45 +62,44 @@ export function TopHeader() {
   // On other pages: always white
   const isTransparent = isHome && !scrolled && !mobileOpen;
   const chromeColor = isTransparent ? "#181D25" : "#FFFFFF";
-  const chromeScheme = isTransparent ? "dark" : "light";
 
   useLayoutEffect(() => {
     const applyChrome = () => {
       const head = document.head;
+      // Keep only one theme-color meta (Safari can behave oddly with multiples).
+      const mediaThemeMetas = head.querySelectorAll('meta[name="theme-color"][media]');
+      mediaThemeMetas.forEach((meta) => meta.remove());
 
-      // Recreate theme-color meta to force Safari to re-read it on SPA updates.
-      const existingThemeMetas = head.querySelectorAll('meta[name="theme-color"]');
-      existingThemeMetas.forEach((meta) => meta.remove());
-
-      const themeMeta = document.createElement("meta");
-      themeMeta.setAttribute("name", "theme-color");
-      themeMeta.setAttribute("content", chromeColor);
-      head.appendChild(themeMeta);
-
-      let schemeMeta = head.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
-      if (!schemeMeta) {
-        schemeMeta = document.createElement("meta");
-        schemeMeta.setAttribute("name", "color-scheme");
-        head.appendChild(schemeMeta);
+      let themeMeta = head.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      if (!themeMeta) {
+        themeMeta = document.createElement("meta");
+        themeMeta.setAttribute("name", "theme-color");
+        head.appendChild(themeMeta);
       }
-      schemeMeta.setAttribute("content", chromeScheme);
+      themeMeta.removeAttribute("media");
+
+      // iOS Safari sometimes ignores same-step updates; force a tiny intermediate change first.
+      const intermediateColor = chromeColor === "#FFFFFF" ? "#FEFEFE" : "#171C24";
+      themeMeta.setAttribute("content", intermediateColor);
+      themeMeta.getAttribute("content");
+      themeMeta.setAttribute("content", chromeColor);
 
       // Safari may derive UI chrome from document background.
       document.documentElement.style.backgroundColor = chromeColor;
       document.body.style.backgroundColor = chromeColor;
-      document.documentElement.style.colorScheme = chromeScheme;
-      document.body.style.colorScheme = chromeScheme;
     };
 
     applyChrome();
     const rafId = window.requestAnimationFrame(applyChrome);
     const timeoutId = window.setTimeout(applyChrome, 140);
+    const timeoutId2 = window.setTimeout(applyChrome, 320);
 
     return () => {
       window.cancelAnimationFrame(rafId);
       window.clearTimeout(timeoutId);
+      window.clearTimeout(timeoutId2);
     };
-  }, [chromeColor, chromeScheme, location.pathname, scrolled, mobileOpen]);
+  }, [chromeColor, location.pathname, scrolled, mobileOpen]);
 
   return (
     <header

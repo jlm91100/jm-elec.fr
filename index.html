@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#181D25" />
-    <meta name="color-scheme" content="light" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -23,13 +23,9 @@
       (function () {
         var isHome = window.location.pathname === "/";
         var color = isHome ? "#181D25" : "#FFFFFF";
-        var scheme = isHome ? "dark" : "light";
         var themeMeta = document.querySelector('meta[name="theme-color"]');
         if (themeMeta) themeMeta.setAttribute("content", color);
-        var schemeMeta = document.querySelector('meta[name="color-scheme"]');
-        if (schemeMeta) schemeMeta.setAttribute("content", scheme);
         document.documentElement.style.backgroundColor = color;
-        document.documentElement.style.colorScheme = scheme;
       })();
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
