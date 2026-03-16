@@ -1,17 +1,6 @@
 {
   "redirects": [
     {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.jm-elec.fr"
-        }
-      ],
-      "destination": "https://jm-elec.fr/$1",
-      "permanent": true
-    },
-    {
       "source": "/installation-remplacement-declairage",
       "destination": "/services/eclairage-interieur-exterieur",
       "permanent": true
