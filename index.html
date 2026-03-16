@@ -21,6 +21,18 @@
     <meta property="og:locale" content="fr_FR" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (function () {
+        var dark = "#111827";
+        var light = "#faf9f6";
+        var isHome = window.location.pathname === "/";
+        var color = isHome ? dark : light;
+        var metas = document.querySelectorAll('meta[name="theme-color"]');
+        for (var i = 0; i < metas.length; i += 1) {
+          metas[i].setAttribute("content", color);
+        }
+      })();
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import logoSrc from "@/assets/logo-jm-elec.png";
 import logoDarkSrc from "@/assets/logo-jm-elec-dark.png";
 
+const THEME_COLOR_DARK = "#111827";
+const THEME_COLOR_LIGHT = "#faf9f6";
 
 const navItems = [
   { to: "/services", label: "Services" },
@@ -34,20 +36,28 @@ export function TopHeader() {
   // On other pages: always white
   const isTransparent = isHome && !scrolled && !mobileOpen;
 
+  useEffect(() => {
+    const color = isHome ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+    const metas = document.querySelectorAll('meta[name="theme-color"]');
+    metas.forEach((meta) => {
+      meta.setAttribute("content", color);
+    });
+  }, [isHome]);
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 pt-[env(safe-area-inset-top)]",
         isTransparent
           ? "bg-transparent"
-          : "bg-card/95 backdrop-blur-md shadow-sm border-b border-border"
+          : "bg-card backdrop-blur-md shadow-sm border-b border-border"
       )}
     >
       {/* iOS safe-area top strip (heure/batterie) */}
       <div
         className={cn(
           "pointer-events-none absolute left-0 right-0 top-0 h-[env(safe-area-inset-top)]",
-          isTransparent ? "bg-sidebar" : "bg-card/95"
+          isTransparent ? "bg-sidebar" : "bg-card"
         )}
         aria-hidden="true"
       />
