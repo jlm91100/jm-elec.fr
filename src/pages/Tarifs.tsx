@@ -9,8 +9,9 @@ const tarifs = [
   {
     category: "Informations générales",
     items: [
-      { label: "Taux horaire", price: "100 €/h", detail: "Main-d'œuvre, facturation à l'heure (pas de demi-heure)" },
-      { label: "Frais de déplacement", price: "50 €", detail: "Forfait fixe par intervention, Essonne et alentours" },
+      { label: "Taux horaire", price: "95 €/h", detail: "Main-d'œuvre, facturation à l'heure (pas de demi-heure)" },
+      { label: "Frais de déplacement (≤ 20 km)", price: "50 €", detail: "Forfait par intervention dans un rayon de 20 km" },
+      { label: "Frais de déplacement (> 20 km)", price: "80 €", detail: "Forfait par intervention au-delà de 20 km" },
     ],
     link: "/contact",
   },
