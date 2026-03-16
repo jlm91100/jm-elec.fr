@@ -7,6 +7,7 @@ import logoSrc from "@/assets/logo-jm-elec.png";
 import logoDarkSrc from "@/assets/logo-jm-elec-dark.png";
 
 const THEME_COLOR_DARK = "#111827";
+const THEME_COLOR_LIGHT = "#faf9f6";
 
 const navItems = [
   { to: "/services", label: "Services" },
@@ -36,7 +37,7 @@ export function TopHeader() {
   const isTransparent = isHome && !scrolled && !mobileOpen;
 
   useEffect(() => {
-    const color = THEME_COLOR_DARK;
+    const color = isHome ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
     const metas = document.querySelectorAll('meta[name="theme-color"]');
     metas.forEach((meta) => {
       meta.setAttribute("content", color);
@@ -46,7 +47,7 @@ export function TopHeader() {
     // pour la zone système; on synchronise donc html/body à la route.
     document.documentElement.style.backgroundColor = color;
     document.body.style.backgroundColor = color;
-  }, [location.pathname]);
+  }, [isHome]);
 
   return (
     <header
@@ -61,7 +62,7 @@ export function TopHeader() {
       <div
         className={cn(
           "pointer-events-none absolute left-0 right-0 top-0 h-[env(safe-area-inset-top)]",
-          "bg-sidebar"
+          isHome ? "bg-sidebar" : "bg-card"
         )}
         aria-hidden="true"
       />

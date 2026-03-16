@@ -23,7 +23,10 @@
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       (function () {
-        var color = "#111827";
+        var dark = "#111827";
+        var light = "#faf9f6";
+        var isHome = window.location.pathname === "/";
+        var color = isHome ? dark : light;
         var metas = document.querySelectorAll('meta[name="theme-color"]');
         for (var i = 0; i < metas.length; i += 1) {
           metas[i].setAttribute("content", color);
