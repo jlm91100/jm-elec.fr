@@ -23,11 +23,40 @@ export function TopHeader() {
   const isHome = location.pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const getScrollTop = () =>
+      Math.max(
+        window.scrollY || 0,
+        document.documentElement.scrollTop || 0,
+        document.body.scrollTop || 0
+      );
+
+    const handleScroll = () => {
+      // iOS can report non-zero values around toolbar transitions;
+      // keep a low threshold so the header returns to "top" state reliably.
+      setScrolled(getScrollTop() > 8);
+    };
+
+    const vv = window.visualViewport;
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    vv?.addEventListener("scroll", handleScroll);
+    vv?.addEventListener("resize", handleScroll);
+
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const rafId = window.requestAnimationFrame(handleScroll);
+    const timeout0 = window.setTimeout(handleScroll, 0);
+    const timeout120 = window.setTimeout(handleScroll, 120);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      vv?.removeEventListener("scroll", handleScroll);
+      vv?.removeEventListener("resize", handleScroll);
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(timeout0);
+      window.clearTimeout(timeout120);
+    };
+  }, [location.pathname, mobileOpen]);
 
   // On home page: transparent header that becomes white on scroll
   // On other pages: always white
