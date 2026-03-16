@@ -109,7 +109,7 @@
 
   .sticky-cta-bar {
     @apply fixed bottom-0 left-0 right-0 z-50 flex md:hidden;
-    @apply border-t border-border bg-card/95 backdrop-blur-sm;
+    @apply bg-transparent;
     padding-bottom: env(safe-area-inset-bottom);
   }
 
