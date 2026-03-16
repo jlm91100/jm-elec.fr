@@ -6,9 +6,9 @@ export function MobileStickyCTA() {
     <div className="sticky-cta-bar" role="complementary" aria-label="Actions rapides">
       <a
         href="tel:0767973848"
-        className="flex flex-1 items-center justify-center gap-2 py-3.5 font-medium text-sm bg-sidebar text-sidebar-foreground transition-colors hover:bg-sidebar-accent"
+        className="flex flex-1 items-center justify-center gap-2 py-3.5 font-semibold text-sm bg-sidebar text-sidebar-foreground ring-1 ring-inset ring-cta/60 transition-colors hover:bg-sidebar-accent"
       >
-        <Phone className="h-4 w-4" />
+        <Phone className="h-4 w-4 text-cta" />
         Appeler
       </a>
       <Link
