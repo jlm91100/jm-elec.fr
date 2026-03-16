@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import logoSrc from "@/assets/logo-jm-elec.png";
 import logoDarkSrc from "@/assets/logo-jm-elec-dark.png";
 
-const THEME_COLOR_DARK = "#111827";
+const THEME_COLOR_DARK = "#181D25";
 const THEME_COLOR_LIGHT = "#faf9f6";
 
 const navItems = [
