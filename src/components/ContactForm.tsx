@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertCircle, Paperclip } from "lucide-react";
 
@@ -41,7 +41,8 @@ const serviceOptions = [
   "Autre",
 ];
 
-const DEFAULT_CONTACT_FORM_ENDPOINT = "https://formsubmit.co/ajax/contact@jm-elec.fr";
+const SUCCESS_QUERY_PARAM = "sent";
+const DEFAULT_CONTACT_FORM_ENDPOINT = "https://formsubmit.co/contact@jm-elec.fr";
 const MAX_ATTACHMENTS = 5;
 const MAX_TOTAL_ATTACHMENTS_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_ATTACHMENT_EXTENSIONS = [
@@ -91,17 +92,39 @@ const validateAttachments = (files: File[]): string | undefined => {
   return undefined;
 };
 
+const normalizeSubmitEndpoint = (endpoint: string): string => endpoint.replace("/ajax/", "/");
+
 export function ContactForm() {
   const [form, setForm] = useState<ContactFormData>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<ErrorKey, string>>>({});
   const [attachments, setAttachments] = useState<File[]>([]);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const [submitError, setSubmitError] = useState("");
-  const startTime = useRef(Date.now());
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const submitEndpoint =
+  const startTime = useRef(Date.now());
+
+  const configuredEndpoint =
     (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ||
     DEFAULT_CONTACT_FORM_ENDPOINT;
+  const submitEndpoint = normalizeSubmitEndpoint(configuredEndpoint);
+
+  const pageUrl = useMemo(() => {
+    if (typeof window === "undefined") return "https://jm-elec.fr/contact";
+    return `${window.location.origin}/contact`;
+  }, []);
+
+  const successUrl = useMemo(() => {
+    if (typeof window === "undefined") return "https://jm-elec.fr/contact?sent=1";
+    return `${window.location.origin}/contact?${SUCCESS_QUERY_PARAM}=1`;
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get(SUCCESS_QUERY_PARAM) === "1") {
+      setStatus("success");
+    }
+  }, []);
 
   const validate = (): boolean => {
     const nextErrors: Partial<Record<ErrorKey, string>> = {};
@@ -135,62 +158,26 @@ export function ContactForm() {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (form.honeypot) return;
-    if (Date.now() - startTime.current < 3000) return;
-    if (!validate()) return;
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    setSubmitError("");
 
-    try {
-      setStatus("submitting");
-      setSubmitError("");
-
-      const payload = new FormData();
-      const firstName = form.firstName.trim();
-      const lastName = form.lastName.trim();
-
-      payload.append("prenom", firstName);
-      payload.append("nom", lastName);
-      payload.append("name", `${firstName} ${lastName}`.trim());
-      payload.append("email", form.email.trim());
-      payload.append("phone", form.phone.trim());
-      payload.append("service", form.service.trim());
-      payload.append("city", form.city.trim());
-      payload.append("message", form.message.trim());
-      payload.append("source", "jm-elec.fr");
-      payload.append("page", window.location.href);
-      payload.append("submittedAt", new Date().toISOString());
-      payload.append("_subject", "Nouveau contact jm-elec.fr");
-      payload.append("_template", "table");
-      payload.append("_captcha", "false");
-      payload.append("_honey", form.honeypot);
-
-      attachments.forEach((file) => {
-        payload.append("attachment", file, file.name);
-      });
-
-      const response = await fetch(submitEndpoint, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: payload,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
-
-      setStatus("success");
-      setForm(initialForm);
-      setAttachments([]);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
-    } catch {
-      setStatus("error");
-      setSubmitError("L'envoi a échoué. Réessayez dans quelques minutes ou appelez-nous directement au 07 67 97 38 48.");
+    if (form.honeypot) {
+      e.preventDefault();
+      return;
     }
+
+    if (Date.now() - startTime.current < 3000) {
+      e.preventDefault();
+      setSubmitError("Merci de patienter quelques secondes avant l'envoi.");
+      return;
+    }
+
+    if (!validate()) {
+      e.preventDefault();
+      return;
+    }
+
+    setStatus("submitting");
   };
 
   const handleChange = (field: keyof ContactFormData) => (
@@ -211,13 +198,32 @@ export function ContactForm() {
     }));
   };
 
+  const resetAfterSuccess = () => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete(SUCCESS_QUERY_PARAM);
+      window.history.replaceState({}, "", url.toString());
+    }
+
+    setStatus("idle");
+    setSubmitError("");
+    setErrors({});
+    setForm(initialForm);
+    setAttachments([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   if (status === "success") {
     return (
       <div className="text-center py-12">
         <CheckCircle className="h-14 w-14 text-cta mx-auto mb-5" />
         <h3>Demande envoyée !</h3>
-        <p className="text-sm text-muted-foreground mt-2">Nous vous recontactons sous 24 h.</p>
-        <Button variant="outline" size="sm" className="mt-6" onClick={() => setStatus("idle")}>
+        <p className="text-sm text-muted-foreground mt-2">
+          Nous vous recontactons sous 24 h. Si vous avez joint des photos ou des documents, ils seront pris en compte dans l'analyse de votre demande.
+        </p>
+        <Button variant="outline" size="sm" className="mt-6" onClick={resetAfterSuccess}>
           Envoyer un autre message
         </Button>
       </div>
@@ -225,7 +231,22 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+    <form
+      onSubmit={handleSubmit}
+      action={submitEndpoint}
+      method="POST"
+      encType="multipart/form-data"
+      className="space-y-5"
+      noValidate
+    >
+      <input type="hidden" name="_subject" value="Nouveau contact jm-elec.fr" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value={successUrl} />
+      <input type="hidden" name="source" value="jm-elec.fr" />
+      <input type="hidden" name="page" value={pageUrl} />
+      <input type="hidden" name="name" value={`${form.firstName.trim()} ${form.lastName.trim()}`.trim()} />
+
       <div className="hidden" aria-hidden="true">
         <input
           type="text"
@@ -241,6 +262,7 @@ export function ContactForm() {
         <Field label="Prénom *" error={errors.firstName}>
           <input
             type="text"
+            name="prenom"
             value={form.firstName}
             onChange={handleChange("firstName")}
             maxLength={80}
@@ -253,6 +275,7 @@ export function ContactForm() {
         <Field label="Nom *" error={errors.lastName}>
           <input
             type="text"
+            name="nom"
             value={form.lastName}
             onChange={handleChange("lastName")}
             maxLength={100}
@@ -265,6 +288,7 @@ export function ContactForm() {
         <Field label="Email *" error={errors.email}>
           <input
             type="email"
+            name="email"
             value={form.email}
             onChange={handleChange("email")}
             maxLength={255}
@@ -277,6 +301,7 @@ export function ContactForm() {
         <Field label="Téléphone *" error={errors.phone}>
           <input
             type="tel"
+            name="phone"
             value={form.phone}
             onChange={handleChange("phone")}
             required
@@ -286,7 +311,12 @@ export function ContactForm() {
         </Field>
 
         <Field label="Service concerné">
-          <select value={form.service} onChange={handleChange("service")} className="form-input">
+          <select
+            name="service"
+            value={form.service}
+            onChange={handleChange("service")}
+            className="form-input"
+          >
             <option value="">- Choisir un service -</option>
             {serviceOptions.map((service) => (
               <option key={service} value={service}>
@@ -299,17 +329,19 @@ export function ContactForm() {
         <Field label="Ville / Code postal">
           <input
             type="text"
+            name="city"
             value={form.city}
             onChange={handleChange("city")}
             maxLength={100}
             className="form-input"
-            placeholder="Ex : Bretigny-sur-Orge, 91220"
+            placeholder="Ex : Brétigny-sur-Orge, 91220"
           />
         </Field>
       </div>
 
       <Field label="Décrivez votre besoin *" error={errors.message}>
         <textarea
+          name="message"
           value={form.message}
           onChange={handleChange("message")}
           maxLength={2000}
@@ -324,6 +356,7 @@ export function ContactForm() {
         <input
           ref={fileInputRef}
           type="file"
+          name="attachment"
           multiple
           accept="image/*,.pdf,.doc,.docx,.heic,.heif"
           onChange={handleAttachmentChange}
@@ -356,7 +389,7 @@ export function ContactForm() {
         {status === "submitting" ? "Envoi en cours..." : "Envoyer ma demande"}
       </Button>
 
-      {status === "error" && submitError && (
+      {submitError && (
         <p className="flex items-start gap-2 text-sm text-destructive">
           <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
           {submitError}
