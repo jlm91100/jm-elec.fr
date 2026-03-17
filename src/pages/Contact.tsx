@@ -21,10 +21,10 @@ export default function ContactPage() {
         <div className="max-w-2xl">
           <h1>Demandez votre devis gratuit</h1>
           <p className="text-base text-muted-foreground mt-4 mb-4 leading-relaxed">
-            Décrivez votre besoin — nous vous recontactons sous 24 h avec un devis détaillé et sans engagement. Que ce soit pour un dépannage, un remplacement de tableau, une borne de recharge ou une rénovation complète, nous sommes à votre écoute.
+            Décrivez votre besoin et nous vous recontactons sous 24 h avec un devis détaillé et sans engagement. Que ce soit pour un dépannage, un remplacement de tableau, une borne de recharge ou une rénovation complète, nous sommes à votre écoute.
           </p>
           <p className="text-sm text-muted-foreground mb-12 leading-relaxed">
-            Pour un pré-chiffrage rapide, précisez le type de logement (pavillon, appartement), l'année de construction, et le problème rencontré. Si vous avez un diagnostic électrique, joignez-le à votre demande.
+            Pour un pré-chiffrage plus rapide sur tous nos services, joignez des photos et vos documents utiles : DPE, diagnostic électrique, plans, anciens devis, notices ou références d'équipement.
           </p>
         </div>
 
