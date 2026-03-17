@@ -20,6 +20,31 @@ export interface RealisationData {
 
 export const realisations: RealisationData[] = [
   {
+    "slug": "remplacement-vmc-maison-marolles",
+    "title": "Remplacement d'une VMC simple flux hygroréglable S&P - Maison à Marolles-en-Hurepoix",
+    "seoTitle": "Remplacement VMC simple flux hygroréglable S&P à Marolles-en-Hurepoix - JM-ELEC 91",
+    "seoDescription": "Remplacement d'une VMC simple flux en fin de vie par une VMC simple flux hygroréglable S&P (Soler & Palau) dans les combles d'une maison de plain-pied à Marolles-en-Hurepoix.",
+    "description": "Remplacement d'une VMC qui tournait au ralenti par une VMC simple flux hygroréglable S&P, plus performante et adaptée à l'humidité du logement.",
+    "date": "2026-03",
+    "image": "/images/realisations/vmc-marolles-16-9.webp",
+    "heroImage": "/images/realisations/vmc-marolles-21-9.webp",
+    "city": "Marolles-en-Hurepoix",
+    "service": "Dépannage électrique",
+    "serviceSlug": "depannage-electrique",
+    "zoneSlug": "marolles-en-hurepoix",
+    "context": "Dans les combles d'une maison de plain-pied, la VMC existante tournait très lentement, avec une extraction d'air presque inexistante dans les pièces humides.",
+    "challenge": "Rétablir une ventilation efficace sans reprise lourde du réseau, tout en améliorant le confort et la régulation de l'humidité au quotidien.",
+    "solution": "Dépose de l'ancien groupe VMC puis installation d'une VMC simple flux hygroréglable S&P (Soler & Palau). Contrôle des raccordements, vérification des bouches et tests de fonctionnement après mise en service.",
+    "result": "La ventilation est redevenue efficace. La VMC adapte désormais sa vitesse au taux d'humidité, ce qui améliore l'extraction d'air et le confort dans la maison.",
+    "details": [
+      "VMC simple flux hygroréglable S&P (Soler & Palau)",
+      "Pose dans les combles d'une maison de plain-pied",
+      "Remplacement complet du groupe de ventilation",
+      "Contrôle des raccordements et des bouches d'extraction",
+      "Tests de fonctionnement et mise en service"
+    ]
+  },
+  {
     "slug": "remplacement-tableau-pavillon-bretigny",
     "title": "Remplacement de tableau — Pavillon à Brétigny-sur-Orge",
     "seoTitle": "Remplacement tableau électrique Brétigny-sur-Orge — JM-ELEC 91",
