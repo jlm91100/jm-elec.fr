@@ -244,6 +244,7 @@ export function ContactForm() {
     >
       <input type="hidden" name="_subject" value="Nouveau contact jm-elec.fr" />
       <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_next" value={successUrl} />
       <input type="hidden" name="source" value="jm-elec.fr" />
       <input type="hidden" name="page" value={pageUrl} />
@@ -360,7 +361,7 @@ export function ContactForm() {
             <input
               key={index}
               type="file"
-              name="attachment"
+              name={index === 0 ? "attachment" : `attachment${index + 1}`}
               accept="image/*,.pdf,.doc,.docx,.heic,.heif"
               onChange={handleAttachmentChange(index)}
               className="form-input file:mr-4 file:rounded-md file:border-0 file:bg-cta/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-cta/20"
