@@ -43,7 +43,7 @@ const serviceOptions = [
 
 const SUCCESS_QUERY_PARAM = "sent";
 const DEFAULT_CONTACT_FORM_ENDPOINT = "https://formsubmit.co/contact@jm-elec.fr";
-const MAX_ATTACHMENTS = 5;
+const MAX_ATTACHMENTS = 3;
 const MAX_TOTAL_ATTACHMENTS_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_ATTACHMENT_EXTENSIONS = [
   ".jpg",
@@ -97,10 +97,11 @@ const normalizeSubmitEndpoint = (endpoint: string): string => endpoint.replace("
 export function ContactForm() {
   const [form, setForm] = useState<ContactFormData>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<ErrorKey, string>>>({});
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachments, setAttachments] = useState<Array<File | null>>(
+    () => Array.from({ length: MAX_ATTACHMENTS }, () => null),
+  );
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const [submitError, setSubmitError] = useState("");
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const startTime = useRef(Date.now());
 
   const configuredEndpoint =
@@ -128,6 +129,7 @@ export function ContactForm() {
 
   const validate = (): boolean => {
     const nextErrors: Partial<Record<ErrorKey, string>> = {};
+    const selectedAttachments = attachments.filter((file): file is File => Boolean(file));
 
     if (!form.firstName.trim() || form.firstName.length > 80) {
       nextErrors.firstName = "Prénom requis (max 80 caractères).";
@@ -149,7 +151,7 @@ export function ContactForm() {
       nextErrors.message = "Message requis (max 2000 caractères).";
     }
 
-    const attachmentError = validateAttachments(attachments);
+    const attachmentError = validateAttachments(selectedAttachments);
     if (attachmentError) {
       nextErrors.attachments = attachmentError;
     }
@@ -189,12 +191,16 @@ export function ContactForm() {
     }
   };
 
-  const handleAttachmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nextAttachments = Array.from(e.target.files || []);
+  const handleAttachmentChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextFile = e.target.files?.[0] ?? null;
+    const nextAttachments = [...attachments];
+    nextAttachments[index] = nextFile;
+    const selectedAttachments = nextAttachments.filter((file): file is File => Boolean(file));
+
     setAttachments(nextAttachments);
     setErrors((current) => ({
       ...current,
-      attachments: validateAttachments(nextAttachments),
+      attachments: validateAttachments(selectedAttachments),
     }));
   };
 
@@ -209,10 +215,7 @@ export function ContactForm() {
     setSubmitError("");
     setErrors({});
     setForm(initialForm);
-    setAttachments([]);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    setAttachments(Array.from({ length: MAX_ATTACHMENTS }, () => null));
   };
 
   if (status === "success") {
@@ -241,7 +244,6 @@ export function ContactForm() {
     >
       <input type="hidden" name="_subject" value="Nouveau contact jm-elec.fr" />
       <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_next" value={successUrl} />
       <input type="hidden" name="source" value="jm-elec.fr" />
       <input type="hidden" name="page" value={pageUrl} />
@@ -353,28 +355,33 @@ export function ContactForm() {
       </Field>
 
       <Field label="Photos / fichiers (optionnel)" error={errors.attachments}>
-        <input
-          ref={fileInputRef}
-          type="file"
-          name="attachment"
-          multiple
-          accept="image/*,.pdf,.doc,.docx,.heic,.heif"
-          onChange={handleAttachmentChange}
-          className="form-input file:mr-4 file:rounded-md file:border-0 file:bg-cta/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-cta/20"
-        />
+        <div className="space-y-2">
+          {attachments.map((_, index) => (
+            <input
+              key={index}
+              type="file"
+              name="attachment"
+              accept="image/*,.pdf,.doc,.docx,.heic,.heif"
+              onChange={handleAttachmentChange(index)}
+              className="form-input file:mr-4 file:rounded-md file:border-0 file:bg-cta/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-foreground hover:file:bg-cta/20"
+            />
+          ))}
+        </div>
         <p className="text-xs text-muted-foreground mt-1.5">
           Ajoutez jusqu'à {MAX_ATTACHMENTS} fichiers (max total 10 Mo). Vous pouvez joindre des photos et des documents utiles pour tout type de demande : DPE, diagnostic électrique, plans, devis existants, notices ou références matériel.
         </p>
-        {attachments.length > 0 && (
+        {attachments.some(Boolean) && (
           <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
-            {attachments.map((file, index) => (
-              <li key={`${file.name}-${file.size}-${index}`} className="flex items-center gap-1.5">
-                <Paperclip className="h-3.5 w-3.5 flex-shrink-0" />
-                <span className="truncate">
-                  {file.name} ({formatFileSize(file.size)})
-                </span>
-              </li>
-            ))}
+            {attachments
+              .filter((file): file is File => Boolean(file))
+              .map((file, index) => (
+                <li key={`${file.name}-${file.size}-${index}`} className="flex items-center gap-1.5">
+                  <Paperclip className="h-3.5 w-3.5 flex-shrink-0" />
+                  <span className="truncate">
+                    {file.name} ({formatFileSize(file.size)})
+                  </span>
+                </li>
+              ))}
           </ul>
         )}
       </Field>
