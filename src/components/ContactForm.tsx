@@ -44,7 +44,8 @@ const serviceOptions = [
 const SUCCESS_QUERY_PARAM = "sent";
 const DEFAULT_CONTACT_FORM_ENDPOINT = "https://formsubmit.co/contact@jm-elec.fr";
 const MAX_ATTACHMENTS = 3;
-const MAX_TOTAL_ATTACHMENTS_SIZE = 10 * 1024 * 1024;
+const MAX_TOTAL_ATTACHMENTS_SIZE = 8 * 1024 * 1024;
+const MAX_SINGLE_ATTACHMENT_SIZE = 4 * 1024 * 1024;
 const ACCEPTED_ATTACHMENT_EXTENSIONS = [
   ".jpg",
   ".jpeg",
@@ -84,9 +85,13 @@ const validateAttachments = (files: File[]): string | undefined => {
     return "Formats acceptés : photos (JPG, PNG, WEBP, HEIC) et documents (PDF, DOC, DOCX).";
   }
 
+  if (files.some((file) => file.size > MAX_SINGLE_ATTACHMENT_SIZE)) {
+    return "Chaque fichier doit faire 4 Mo maximum.";
+  }
+
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
   if (totalSize > MAX_TOTAL_ATTACHMENTS_SIZE) {
-    return "La taille totale des fichiers ne doit pas dépasser 10 Mo.";
+    return "La taille totale des fichiers ne doit pas dépasser 8 Mo.";
   }
 
   return undefined;
@@ -369,7 +374,7 @@ export function ContactForm() {
           ))}
         </div>
         <p className="text-xs text-muted-foreground mt-1.5">
-          Ajoutez jusqu'à {MAX_ATTACHMENTS} fichiers (max total 10 Mo). Vous pouvez joindre des photos et des documents utiles pour tout type de demande : DPE, diagnostic électrique, plans, devis existants, notices ou références matériel.
+          Ajoutez jusqu'à {MAX_ATTACHMENTS} fichiers (4 Mo max par fichier, 8 Mo au total). Pour éviter les envois partiels, privilégiez des photos compressées ou captures d'écran.
         </p>
         {attachments.some(Boolean) && (
           <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
@@ -384,6 +389,16 @@ export function ContactForm() {
                 </li>
               ))}
           </ul>
+        )}
+        {attachments.some(Boolean) && (
+          <p className="text-xs text-muted-foreground mt-2">
+            Total sélectionné :{" "}
+            {formatFileSize(
+              attachments
+                .filter((file): file is File => Boolean(file))
+                .reduce((sum, file) => sum + file.size, 0),
+            )}
+          </p>
         )}
       </Field>
 
