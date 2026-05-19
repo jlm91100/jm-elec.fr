@@ -443,26 +443,35 @@ export default function BorneRechargeEssonne() {
                   </li>
                 </ul>
 
-                <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
-                  <p className="text-sm text-zinc-300">
-                    Certifications: RGE, Qualifelec IRVE.
+                <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4">
+                  <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">
+                    Certifications
                   </p>
-                  <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <img
-                      src="/images/landing/logo-qualifelec.png"
-                      alt="Logo Qualifelec"
-                      className="h-12 w-auto rounded bg-white p-1"
-                    />
-                    <img
-                      src="/images/landing/logo-rge.png"
-                      alt="Logo RGE"
-                      className="h-12 w-auto rounded bg-white p-1"
-                    />
-                    <img
-                      src="/images/landing/logo-advenir.webp"
-                      alt="Logo Advenir"
-                      className="h-12 w-auto rounded bg-white p-1"
-                    />
+                  <p className="mt-1 text-sm text-zinc-300">
+                    RGE, Qualifelec IRVE et partenaires reconnus.
+                  </p>
+                  <div className="mt-4 grid grid-cols-3 gap-3">
+                    <div className="flex h-20 items-center justify-center rounded-xl border border-zinc-700 bg-white p-2 shadow-[0_10px_24px_-16px_rgba(0,0,0,0.8)]">
+                      <img
+                        src="/images/landing/logo-qualifelec.png"
+                        alt="Logo Qualifelec"
+                        className="max-h-12 w-auto object-contain"
+                      />
+                    </div>
+                    <div className="flex h-20 items-center justify-center rounded-xl border border-zinc-700 bg-white p-2 shadow-[0_10px_24px_-16px_rgba(0,0,0,0.8)]">
+                      <img
+                        src="/images/landing/logo-rge.png"
+                        alt="Logo RGE"
+                        className="max-h-12 w-auto object-contain"
+                      />
+                    </div>
+                    <div className="flex h-20 items-center justify-center rounded-xl border border-zinc-700 bg-white p-2 shadow-[0_10px_24px_-16px_rgba(0,0,0,0.8)]">
+                      <img
+                        src="/images/landing/logo-advenir.webp"
+                        alt="Logo Advenir"
+                        className="max-h-12 w-auto object-contain"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -779,7 +788,7 @@ export default function BorneRechargeEssonne() {
               <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-yellow-400" />
-                  <p className="font-semibold text-white">Réassurance immédiate</p>
+                  <p className="font-semibold text-white">Pourquoi nous faire confiance</p>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-zinc-300">
                   <li>- Intervention sous une semaine selon planning.</li>
