@@ -38,14 +38,21 @@ npm run dev
 
 ## Contact form configuration
 
-The contact form sends requests by default to:
-`https://formsubmit.co/ajax/contact@jm-elec.fr`
+The contact form is sent directly to Web3Forms from the browser.
 
-If you want to use another provider, override it:
+Setup:
 
-1. Copy `.env.example` to `.env`
-2. Set `VITE_CONTACT_FORM_ENDPOINT` with your form endpoint URL
-3. Restart the dev server
+1. Create your access key at `https://web3forms.com/`.
+2. Copy `.env.example` to `.env`.
+3. Set `VITE_WEB3FORMS_ACCESS_KEY`.
+4. Add the same variable in Vercel (Production/Preview).
+5. Redeploy.
+
+Notes:
+
+- Access key is public by design in Web3Forms client-side usage.
+- The form UI retries once automatically on temporary server errors before showing a fallback message.
+- File attachment support is a Web3Forms paid feature. If attachment upload is rejected, the form is automatically re-sent without the file so the lead is not lost.
 
 ## Google Analytics (optionnel)
 

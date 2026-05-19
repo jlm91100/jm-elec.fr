@@ -1,18 +1,18 @@
 {
-  "checkedAt": "2026-03-11T00:01:00.894Z",
+  "checkedAt": "2026-05-19T14:30:01.453Z",
   "totalPaths": 69,
   "pageResults": [
     {
       "path": "/",
       "status": 200,
       "notFound": false,
-      "title": "JM-ELEC 91 — Électricien professionnel en Essonne et Île-de-France"
+      "title": "JM Elec — Électricien professionnel en Essonne et Île-de-France"
     },
     {
       "path": "/services",
       "status": 200,
       "notFound": false,
-      "title": "Services — Électricien professionnel | JM-ELEC 91"
+      "title": "JM Elec — Électricien professionnel en Essonne et Île-de-France"
     },
     {
       "path": "/services/remplacement-tableau-electrique",
@@ -427,7 +427,9 @@
     "details": "Soumission validée (mock réseau)"
   },
   "previewLogs": [
-    "[preview] \n> vite_react_shadcn_ts@0.0.0 preview\n> vite preview --host 127.0.0.1 --port 4178",
-    "[preview]   \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m4178\u001b[22m/\u001b[39m"
+    "[preview] \n> vite_react_shadcn_ts@0.0.0 preview\n> vite preview --host 127.0.0.1 --port 4173",
+    "[preview] Port 4173 is in use, trying another one...",
+    "[preview] Port 4174 is in use, trying another one...",
+    "[preview]   \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m4175\u001b[22m/\u001b[39m"
   ]
 }

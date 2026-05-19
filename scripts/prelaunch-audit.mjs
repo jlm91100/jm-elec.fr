@@ -5,6 +5,7 @@ import { chromium } from "playwright";
 
 const PREVIEW_PORT = Number(process.env.PREVIEW_PORT || 4173);
 const PREVIEW_URL = `http://127.0.0.1:${PREVIEW_PORT}`;
+const CONTACT_FORM_ENDPOINT = "https://api.web3forms.com/submit";
 const SITEMAP_PATH = "public/sitemap.xml";
 const REPORT_PATH = "prelaunch-report.json";
 
@@ -121,7 +122,7 @@ async function run() {
 
     // Contact form behavior test (mocked network call to avoid real email send)
     let mockSubmitCalls = 0;
-    await page.route("**/formsubmit.co/ajax/**", async (route) => {
+    await page.route("**/api.web3forms.com/submit", async (route) => {
       mockSubmitCalls += 1;
       await route.fulfill({
         status: 200,
@@ -131,7 +132,7 @@ async function run() {
           "access-control-allow-methods": "POST, OPTIONS",
           "access-control-allow-headers": "content-type, accept",
         },
-        body: JSON.stringify({ success: "true" }),
+        body: JSON.stringify({ success: true, message: "Mock submit ok" }),
       });
     });
 
@@ -139,14 +140,18 @@ async function run() {
       await page.goto(`${PREVIEW_URL}/contact`, { waitUntil: "domcontentloaded", timeout: 60_000 });
       await page.waitForTimeout(3_200);
 
-      await page.locator("input[type='text']:visible").first().fill("Test Prelaunch");
-      await page.locator("input[type='email']:visible").first().fill("test@example.com");
-      await page.locator("input[type='tel']:visible").first().fill("0767973848");
-      await page.locator("textarea:visible").first().fill("Test automatise avant mise en ligne.");
+      await page.locator("input[name='prenom']:visible").first().fill("Test");
+      await page.locator("input[name='nom']:visible").first().fill("Prelaunch");
+      await page.locator("input[name='email']:visible").first().fill("test@example.com");
+      await page.locator("input[name='phone']:visible").first().fill("0767973848");
+      await page
+        .locator("textarea[name='message']:visible")
+        .first()
+        .fill("Test automatise avant mise en ligne.");
 
       await Promise.all([
         page
-          .waitForRequest((req) => req.url().includes("formsubmit.co/ajax/"), { timeout: 10_000 })
+          .waitForRequest((req) => req.url().includes(CONTACT_FORM_ENDPOINT), { timeout: 10_000 })
           .catch(() => null),
         page.click("button[type='submit']"),
       ]);

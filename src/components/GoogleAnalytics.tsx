@@ -23,9 +23,9 @@ function hasAnalyticsConsent() {
 function ensureGtagQueue() {
   window.dataLayer = window.dataLayer || [];
   if (!window.gtag) {
-    window.gtag = (function gtag() {
-      window.dataLayer.push(arguments);
-    } as unknown) as (...args: unknown[]) => void;
+    window.gtag = (...args: unknown[]) => {
+      window.dataLayer.push(args);
+    };
   }
 }
 

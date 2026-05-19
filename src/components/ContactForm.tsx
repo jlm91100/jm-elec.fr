@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertCircle, Paperclip } from "lucide-react";
+import { AlertCircle, CheckCircle, Paperclip } from "lucide-react";
 
 interface ContactFormData {
   firstName: string;
@@ -27,25 +27,29 @@ const initialForm: ContactFormData = {
 };
 
 const serviceOptions = [
-  "Remplacement de tableau électrique",
-  "Dépannage électrique",
-  "Mise en sécurité et conformité",
-  "Rénovation électrique",
+  "Remplacement de tableau electrique",
+  "Depannage electrique",
+  "Mise en securite et conformite",
+  "Renovation electrique",
   "Borne de recharge IRVE",
-  "Éclairage intérieur / extérieur",
-  "Interphonie / contrôle d'accès",
-  "Domotique résidentielle",
+  "Eclairage interieur / exterieur",
+  "Interphonie / controle d'acces",
+  "Domotique residentielle",
   "Alarme",
-  "Vidéosurveillance",
-  "PAC (raccordement électrique)",
+  "Videosurveillance",
+  "PAC (raccordement electrique)",
   "Autre",
 ];
 
 const SUCCESS_QUERY_PARAM = "sent";
-const DEFAULT_CONTACT_FORM_ENDPOINT = "https://formsubmit.co/contact@jm-elec.fr";
-const MAX_ATTACHMENTS = 3;
-const MAX_TOTAL_ATTACHMENTS_SIZE = 8 * 1024 * 1024;
-const MAX_SINGLE_ATTACHMENT_SIZE = 4 * 1024 * 1024;
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const FALLBACK_CONTACT_EMAIL = "contact@jm-elec.fr";
+const FALLBACK_CONTACT_PHONE = "07 67 97 38 48";
+const MAX_ATTACHMENTS = 1;
+const MAX_TOTAL_ATTACHMENTS_SIZE = 5 * 1024 * 1024;
+const MAX_SINGLE_ATTACHMENT_SIZE = 5 * 1024 * 1024;
+const RETRYABLE_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504]);
+const SUBMIT_RETRY_DELAYS_MS = [0, 800];
 const ACCEPTED_ATTACHMENT_EXTENSIONS = [
   ".jpg",
   ".jpeg",
@@ -78,26 +82,67 @@ const formatFileSize = (size: number): string => {
 
 const validateAttachments = (files: File[]): string | undefined => {
   if (files.length > MAX_ATTACHMENTS) {
-    return `Maximum ${MAX_ATTACHMENTS} fichiers autorisés.`;
+    return `Maximum ${MAX_ATTACHMENTS} fichier(s) autorise(s).`;
   }
 
   if (files.some((file) => !isAcceptedAttachment(file))) {
-    return "Formats acceptés : photos (JPG, PNG, WEBP, HEIC) et documents (PDF, DOC, DOCX).";
+    return "Formats acceptes: photos (JPG, PNG, WEBP, HEIC) et documents (PDF, DOC, DOCX).";
   }
 
   if (files.some((file) => file.size > MAX_SINGLE_ATTACHMENT_SIZE)) {
-    return "Chaque fichier doit faire 4 Mo maximum.";
+    return "Chaque fichier doit faire 5 Mo maximum.";
   }
 
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
   if (totalSize > MAX_TOTAL_ATTACHMENTS_SIZE) {
-    return "La taille totale des fichiers ne doit pas dépasser 8 Mo.";
+    return "La taille totale des fichiers ne doit pas depasser 5 Mo.";
   }
 
   return undefined;
 };
 
-const normalizeSubmitEndpoint = (endpoint: string): string => endpoint.replace("/ajax/", "/");
+type Web3FormsResponse = {
+  success?: boolean;
+  message?: string;
+  body?: {
+    message?: string;
+  };
+  error?: string;
+};
+
+const getWeb3FormsMessage = (response: Web3FormsResponse | null): string | undefined =>
+  response?.body?.message || response?.message || response?.error;
+
+const markSubmitSuccess = () => {
+  if (typeof window !== "undefined") {
+    const url = new URL(window.location.href);
+    url.searchParams.set(SUCCESS_QUERY_PARAM, "1");
+    window.history.replaceState({}, "", url.toString());
+  }
+};
+
+const buildFallbackMailtoLink = (form: ContactFormData): string => {
+  const subject = "Demande de devis - jm-elec.fr";
+  const body = [
+    "Bonjour,",
+    "",
+    "Le formulaire en ligne est indisponible, je vous contacte par e-mail.",
+    "",
+    `Prenom: ${form.firstName.trim() || "-"}`,
+    `Nom: ${form.lastName.trim() || "-"}`,
+    `Email: ${form.email.trim() || "-"}`,
+    `Telephone: ${form.phone.trim() || "-"}`,
+    `Service: ${form.service.trim() || "-"}`,
+    `Ville: ${form.city.trim() || "-"}`,
+    "",
+    "Message:",
+    form.message.trim() || "-",
+    "",
+    "Note: les pieces jointes doivent etre ajoutees manuellement a cet e-mail.",
+  ].join("\n");
+
+  return `mailto:${FALLBACK_CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
 
 export function ContactForm() {
   const [form, setForm] = useState<ContactFormData>(initialForm);
@@ -108,20 +153,12 @@ export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
   const [submitError, setSubmitError] = useState("");
   const startTime = useRef(Date.now());
-
-  const configuredEndpoint =
-    (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ||
-    DEFAULT_CONTACT_FORM_ENDPOINT;
-  const submitEndpoint = normalizeSubmitEndpoint(configuredEndpoint);
+  const web3formsAccessKey = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined)?.trim();
+  const mailtoFallbackLink = useMemo(() => buildFallbackMailtoLink(form), [form]);
 
   const pageUrl = useMemo(() => {
     if (typeof window === "undefined") return "https://jm-elec.fr/contact";
     return `${window.location.origin}/contact`;
-  }, []);
-
-  const successUrl = useMemo(() => {
-    if (typeof window === "undefined") return "https://jm-elec.fr/contact?sent=1";
-    return `${window.location.origin}/contact?${SUCCESS_QUERY_PARAM}=1`;
   }, []);
 
   useEffect(() => {
@@ -137,11 +174,11 @@ export function ContactForm() {
     const selectedAttachments = attachments.filter((file): file is File => Boolean(file));
 
     if (!form.firstName.trim() || form.firstName.length > 80) {
-      nextErrors.firstName = "Prénom requis (max 80 caractères).";
+      nextErrors.firstName = "Prenom requis (max 80 caracteres).";
     }
 
     if (!form.lastName.trim() || form.lastName.length > 100) {
-      nextErrors.lastName = "Nom requis (max 100 caractères).";
+      nextErrors.lastName = "Nom requis (max 100 caracteres).";
     }
 
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -149,11 +186,11 @@ export function ContactForm() {
     }
 
     if (!form.phone.trim() || !/^[\d\s+()-]{8,20}$/.test(form.phone)) {
-      nextErrors.phone = "Téléphone invalide.";
+      nextErrors.phone = "Telephone invalide.";
     }
 
     if (!form.message.trim() || form.message.length > 2000) {
-      nextErrors.message = "Message requis (max 2000 caractères).";
+      nextErrors.message = "Message requis (max 2000 caracteres).";
     }
 
     const attachmentError = validateAttachments(selectedAttachments);
@@ -165,26 +202,121 @@ export function ContactForm() {
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setSubmitError("");
 
     if (form.honeypot) {
-      e.preventDefault();
+      return;
+    }
+
+    if (!web3formsAccessKey) {
+      setSubmitError(
+        "Configuration manquante du formulaire. Merci de nous appeler au 07 67 97 38 48.",
+      );
       return;
     }
 
     if (Date.now() - startTime.current < 3000) {
-      e.preventDefault();
       setSubmitError("Merci de patienter quelques secondes avant l'envoi.");
       return;
     }
 
     if (!validate()) {
-      e.preventDefault();
       return;
     }
 
     setStatus("submitting");
+    const formElement = e.currentTarget;
+    const selectedAttachments = attachments.filter((file): file is File => Boolean(file));
+    const fullName = `${form.firstName.trim()} ${form.lastName.trim()}`.trim();
+
+    const submitToWeb3Forms = async (includeAttachment: boolean) => {
+      const payload = new FormData(formElement);
+      payload.set("access_key", web3formsAccessKey);
+      payload.set("subject", "Nouveau contact jm-elec.fr");
+      payload.set("from_name", fullName || "JM-ELEC 91");
+      payload.set("botcheck", form.honeypot);
+
+      if (!includeAttachment) {
+        payload.delete("attachment");
+        if (selectedAttachments.length > 0) {
+          const attachmentList = selectedAttachments
+            .map((file) => `${file.name} (${formatFileSize(file.size)})`)
+            .join(", ");
+          payload.append(
+            "attachment_note",
+            `Fichiers non transmis par Web3Forms: ${attachmentList}. Merci de nous les renvoyer par e-mail.`,
+          );
+        }
+      }
+
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: "POST",
+        body: payload,
+      });
+
+      const responseBody = (await response.json().catch(() => null)) as Web3FormsResponse | null;
+      const message = getWeb3FormsMessage(responseBody);
+      const ok = response.ok && responseBody?.success !== false;
+
+      return {
+        ok,
+        status: response.status,
+        message,
+      };
+    };
+
+    for (let attempt = 0; attempt < SUBMIT_RETRY_DELAYS_MS.length; attempt += 1) {
+      const retryDelay = SUBMIT_RETRY_DELAYS_MS[attempt];
+
+      if (retryDelay > 0) {
+        await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      }
+
+      try {
+        const withAttachment = await submitToWeb3Forms(true);
+
+        if (withAttachment.ok) {
+          markSubmitSuccess();
+          setStatus("success");
+          return;
+        }
+
+        let failure = withAttachment;
+
+        if (selectedAttachments.length > 0) {
+          const withoutAttachment = await submitToWeb3Forms(false);
+          if (withoutAttachment.ok) {
+            markSubmitSuccess();
+            setStatus("success");
+            return;
+          }
+          failure = withoutAttachment;
+        }
+
+        const canRetry = RETRYABLE_STATUSES.has(failure.status);
+        const lastAttempt = attempt === SUBMIT_RETRY_DELAYS_MS.length - 1;
+
+        if (!canRetry || lastAttempt) {
+          setStatus("idle");
+          setSubmitError(
+            failure.message ||
+              "Le service d'envoi est temporairement indisponible. Vous pouvez envoyer votre demande par e-mail ou nous appeler directement.",
+          );
+          return;
+        }
+      } catch {
+        const lastAttempt = attempt === SUBMIT_RETRY_DELAYS_MS.length - 1;
+        if (lastAttempt) {
+          setStatus("idle");
+          setSubmitError(
+            "Le service d'envoi est temporairement indisponible. Vous pouvez envoyer votre demande par e-mail ou nous appeler directement.",
+          );
+          return;
+        }
+      }
+    }
   };
 
   const handleChange = (field: keyof ContactFormData) => (
@@ -225,11 +357,12 @@ export function ContactForm() {
 
   if (status === "success") {
     return (
-      <div className="text-center py-12">
-        <CheckCircle className="h-14 w-14 text-cta mx-auto mb-5" />
-        <h3>Demande envoyée !</h3>
-        <p className="text-sm text-muted-foreground mt-2">
-          Nous vous recontactons sous 24 h. Si vous avez joint des photos ou des documents, ils seront pris en compte dans l'analyse de votre demande.
+      <div className="py-12 text-center">
+        <CheckCircle className="mx-auto mb-5 h-14 w-14 text-cta" />
+        <h3>Demande envoyee !</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Nous vous recontactons sous 24 h. Si la piece jointe n'a pas pu etre transmise, nous
+          vous demanderons de la renvoyer.
         </p>
         <Button variant="outline" size="sm" className="mt-6" onClick={resetAfterSuccess}>
           Envoyer un autre message
@@ -241,24 +374,27 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      action={submitEndpoint}
+      action={WEB3FORMS_ENDPOINT}
       method="POST"
       encType="multipart/form-data"
       className="space-y-5"
       noValidate
     >
-      <input type="hidden" name="_subject" value="Nouveau contact jm-elec.fr" />
-      <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value={successUrl} />
+      <input type="hidden" name="access_key" value={web3formsAccessKey ?? ""} />
+      <input type="hidden" name="subject" value="Nouveau contact jm-elec.fr" />
+      <input type="hidden" name="from_name" value="JM-ELEC 91" />
       <input type="hidden" name="source" value="jm-elec.fr" />
       <input type="hidden" name="page" value={pageUrl} />
-      <input type="hidden" name="name" value={`${form.firstName.trim()} ${form.lastName.trim()}`.trim()} />
+      <input
+        type="hidden"
+        name="name"
+        value={`${form.firstName.trim()} ${form.lastName.trim()}`.trim()}
+      />
 
       <div className="hidden" aria-hidden="true">
         <input
           type="text"
-          name="_honey"
+          name="botcheck"
           tabIndex={-1}
           autoComplete="off"
           value={form.honeypot}
@@ -266,8 +402,8 @@ export function ContactForm() {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label="Prénom *" error={errors.firstName}>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <Field label="Prenom *" error={errors.firstName}>
           <input
             type="text"
             name="prenom"
@@ -276,7 +412,7 @@ export function ContactForm() {
             maxLength={80}
             required
             className="form-input"
-            placeholder="Votre prénom"
+            placeholder="Votre prenom"
           />
         </Field>
 
@@ -306,7 +442,7 @@ export function ContactForm() {
           />
         </Field>
 
-        <Field label="Téléphone *" error={errors.phone}>
+        <Field label="Telephone *" error={errors.phone}>
           <input
             type="tel"
             name="phone"
@@ -318,13 +454,8 @@ export function ContactForm() {
           />
         </Field>
 
-        <Field label="Service concerné">
-          <select
-            name="service"
-            value={form.service}
-            onChange={handleChange("service")}
-            className="form-input"
-          >
+        <Field label="Service concerne">
+          <select name="service" value={form.service} onChange={handleChange("service")} className="form-input">
             <option value="">- Choisir un service -</option>
             {serviceOptions.map((service) => (
               <option key={service} value={service}>
@@ -342,12 +473,12 @@ export function ContactForm() {
             onChange={handleChange("city")}
             maxLength={100}
             className="form-input"
-            placeholder="Ex : Brétigny-sur-Orge, 91220"
+            placeholder="Ex : Bretigny-sur-Orge, 91220"
           />
         </Field>
       </div>
 
-      <Field label="Décrivez votre besoin *" error={errors.message}>
+      <Field label="Decrivez votre besoin *" error={errors.message}>
         <textarea
           name="message"
           value={form.message}
@@ -356,7 +487,7 @@ export function ContactForm() {
           rows={5}
           required
           className="form-input resize-y"
-          placeholder="Décrivez votre projet ou votre problème..."
+          placeholder="Decrivez votre projet ou votre probleme..."
         />
       </Field>
 
@@ -373,8 +504,9 @@ export function ContactForm() {
             />
           ))}
         </div>
-        <p className="text-xs text-muted-foreground mt-1.5">
-          Ajoutez jusqu'à {MAX_ATTACHMENTS} fichiers (4 Mo max par fichier, 8 Mo au total). Pour éviter les envois partiels, privilégiez des photos compressées ou captures d'écran.
+        <p className="mt-1.5 text-xs text-muted-foreground">
+          Ajoutez jusqu'a {MAX_ATTACHMENTS} fichier (5 Mo max). En cas d'echec d'envoi du fichier,
+          la demande est envoyee sans piece jointe.
         </p>
         {attachments.some(Boolean) && (
           <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
@@ -391,8 +523,8 @@ export function ContactForm() {
           </ul>
         )}
         {attachments.some(Boolean) && (
-          <p className="text-xs text-muted-foreground mt-2">
-            Total sélectionné :{" "}
+          <p className="mt-2 text-xs text-muted-foreground">
+            Total selectionne:{" "}
             {formatFileSize(
               attachments
                 .filter((file): file is File => Boolean(file))
@@ -413,18 +545,31 @@ export function ContactForm() {
       </Button>
 
       {submitError && (
-        <p className="flex items-start gap-2 text-sm text-destructive">
-          <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-          {submitError}
-        </p>
+        <div className="space-y-2">
+          <p className="flex items-start gap-2 text-sm text-destructive">
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+            {submitError}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Alternative immediate:{" "}
+            <a href={mailtoFallbackLink} className="underline hover:text-cta">
+              envoyer un e-mail pre-rempli
+            </a>{" "}
+            ou appeler le{" "}
+            <a href="tel:+33767973848" className="underline hover:text-cta">
+              {FALLBACK_CONTACT_PHONE}
+            </a>
+            .
+          </p>
+        </div>
       )}
 
       <p className="text-xs text-muted-foreground">
         En soumettant ce formulaire, vous acceptez notre{" "}
         <a href="/politique-de-confidentialite" className="underline hover:text-cta">
-          politique de confidentialité
+          politique de confidentialite
         </a>
-        . Réponse garantie sous 24 h.
+        . Reponse garantie sous 24 h.
       </p>
     </form>
   );
@@ -441,10 +586,10 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-foreground mb-1.5">{label}</label>
+      <label className="mb-1.5 block text-sm font-medium text-foreground">{label}</label>
       {children}
       {error && (
-        <p className="flex items-center gap-1 mt-1.5 text-xs text-destructive">
+        <p className="mt-1.5 flex items-center gap-1 text-xs text-destructive">
           <AlertCircle className="h-3 w-3" />
           {error}
         </p>
