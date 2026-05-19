@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const META_PIXEL_SCRIPT_ID = "MetaPixelScript";
 const META_PIXEL_SCRIPT_SRC = "https://connect.facebook.net/en_US/fbevents.js";
+const DEFAULT_META_PIXEL_ID = "1647777846339180";
 const CONSENT_KEY = "jm-cookie-consent";
 const CONSENT_EVENT = "jm-cookie-consent-updated";
 
@@ -61,7 +62,9 @@ function ensurePixelScript() {
 
 export function MetaPixel() {
   const { pathname, search } = useLocation();
-  const pixelId = (import.meta.env.VITE_META_PIXEL_ID as string | undefined)?.trim();
+  const pixelId =
+    (import.meta.env.VITE_META_PIXEL_ID as string | undefined)?.trim() ||
+    DEFAULT_META_PIXEL_ID;
   const [consentGranted, setConsentGranted] = useState(() =>
     typeof window !== "undefined" ? hasTrackingConsent() : false,
   );
@@ -98,4 +101,3 @@ export function MetaPixel() {
 
   return null;
 }
-
