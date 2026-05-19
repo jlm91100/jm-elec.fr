@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -11,6 +11,7 @@ import {
 import { SEOHead } from "@/components/seo/SEOHead";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Button } from "@/components/ui/button";
+import { ensureEmbedSocialWidgets } from "@/lib/embedSocial";
 import logoLight from "@/assets/logo-jm-elec.png";
 
 const CONSENT_KEY = "jm-cookie-consent";
@@ -18,8 +19,7 @@ const LANDING_ID = "lp_irve_essonne";
 const FALLBACK_PHONE = "07 67 97 38 48";
 const CALL_PHONE = "+33767973848";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
-const GOOGLE_REVIEWS_URL =
-  "https://www.google.com/search?q=JM-ELEC+91+avis+google";
+const GOOGLE_REVIEWS_URL = "https://share.google/LXQprFtKu8Yuk2ZEp";
 const WHATSAPP_MESSAGE =
   "Bonjour, je souhaite vous envoyer une photo de mon tableau electrique pour verifier la faisabilite de mon projet.";
 
@@ -86,24 +86,6 @@ const recentProjects = [
     src: "/images/realisations/borne-jmelec-autel.png",
     alt: "Borne Autel installee par JM-ELEC",
     caption: "Arpajon (91) - Borne Autel 11 kW - Mai 2026",
-  },
-];
-
-const testimonials = [
-  {
-    text: "Equipe ponctuelle, travail propre et explications tres claires. Je recommande.",
-    author: "Nadia M.",
-    city: "Massy (91)",
-  },
-  {
-    text: "Devis rapide, prix annonce respecte, installation en quelques jours.",
-    author: "Thomas L.",
-    city: "Bretigny-sur-Orge (91)",
-  },
-  {
-    text: "Professionnels du debut a la fin. Mise en service parfaite.",
-    author: "Claire D.",
-    city: "Arpajon (91)",
   },
 ];
 
@@ -215,6 +197,10 @@ export default function BorneRechargeEssonne() {
   const web3formsAccessKey = (
     import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined
   )?.trim();
+
+  useEffect(() => {
+    ensureEmbedSocialWidgets();
+  }, []);
 
   const pageUrl = useMemo(() => {
     if (typeof window === "undefined") {
@@ -758,22 +744,11 @@ export default function BorneRechargeEssonne() {
               Cliquez sur la note pour verifier les avis directement sur Google.
             </p>
 
-            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-              {testimonials.map((item) => (
-                <a
-                  key={item.author}
-                  href={GOOGLE_REVIEWS_URL}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="group rounded-2xl border border-zinc-800 bg-zinc-950 p-5 transition duration-200 hover:-translate-y-1 hover:border-zinc-600"
-                >
-                  <p className="text-sm text-zinc-300">{item.text}</p>
-                  <div className="mt-4 flex items-center justify-between text-sm">
-                    <span className="font-semibold text-white">{item.author}</span>
-                    <span className="text-zinc-400">{item.city}</span>
-                  </div>
-                </a>
-              ))}
+            <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-950 p-4 md:p-5">
+              <div
+                className="embedsocial-hashtag min-h-[220px]"
+                data-ref="1653ac9d2f797da158f82b9a3cb3a82a625a4d39"
+              />
             </div>
           </div>
         </section>
