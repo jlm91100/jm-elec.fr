@@ -21,7 +21,7 @@ const CALL_PHONE = "+33767973848";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
 const GOOGLE_REVIEWS_URL = "https://share.google/LXQprFtKu8Yuk2ZEp";
 const WHATSAPP_MESSAGE =
-  "Bonjour, je souhaite vous envoyer une photo de mon tableau electrique pour verifier la faisabilite de mon projet.";
+  "Bonjour, je souhaite vous envoyer une photo de mon tableau électrique pour vérifier la faisabilité de mon projet.";
 
 type TrackingWindow = Window & {
   gtag?: (...args: unknown[]) => void;
@@ -53,38 +53,38 @@ const faqItems = [
   {
     question: "Faut-il obligatoirement un installateur IRVE ?",
     answer:
-      "Oui, pour une borne superieure a 3,7 kW. C'est indispensable pour une installation conforme et securisee.",
+      "Oui, pour une borne supérieure à 3,7 kW. C'est indispensable pour une installation conforme et sécurisée.",
   },
   {
-    question: "Quel delai pour une installation en maison ?",
+    question: "Quel délai pour une installation en maison ?",
     answer:
-      "Apres validation du devis, la pose est generalement programmee sous une semaine selon nos disponibilites.",
+      "Après validation du devis, la pose est généralement programmée sous une semaine selon nos disponibilités.",
   },
   {
-    question: "Quelles aides sont disponibles en Ile-de-France ?",
+    question: "Quelles aides sont disponibles en Île-de-France ?",
     answer:
-      "Pour la maison individuelle, nous appliquons principalement la TVA reduite a 5,5 % lorsque les conditions sont reunies.",
+      "Pour la maison individuelle, nous appliquons principalement la TVA réduite à 5,5 % lorsque les conditions sont réunies.",
   },
 ];
 
-const housingOptions = ["Maison individuelle", "Copropriete", "Entreprise"];
+const housingOptions = ["Maison individuelle", "Copropriété", "Entreprise"];
 
-const installationOptions = ["Interieur", "Exterieur"];
+const installationOptions = ["Intérieur", "Extérieur"];
 
 const recentProjects = [
   {
     src: "/images/realisations/borne-jmelec-schneider.png",
-    alt: "Borne Schneider installee par JM-ELEC",
-    caption: "Bretigny-sur-Orge (91) - Borne Schneider 7.4 kW - Mars 2026",
+    alt: "Borne Schneider installée par JM-ELEC",
+    caption: "Brétigny-sur-Orge (91) - Borne Schneider 7.4 kW - Mars 2026",
   },
   {
     src: "/images/realisations/borne-jmelec-hager.png",
-    alt: "Borne Hager installee par JM-ELEC",
-    caption: "Sainte-Genevieve-des-Bois (91) - Borne Hager 7.4 kW - Avril 2026",
+    alt: "Borne Hager installée par JM-ELEC",
+    caption: "Sainte-Geneviève-des-Bois (91) - Borne Hager 7.4 kW - Avril 2026",
   },
   {
     src: "/images/realisations/borne-jmelec-autel.png",
-    alt: "Borne Autel installee par JM-ELEC",
+    alt: "Borne Autel installée par JM-ELEC",
     caption: "Arpajon (91) - Borne Autel 11 kW - Mai 2026",
   },
 ];
@@ -220,8 +220,8 @@ export default function BorneRechargeEssonne() {
   }, [search]);
 
   const heroTitle = cityInQuery
-    ? `Votre borne de recharge installee sous une semaine a ${cityInQuery}`
-    : "Votre borne de recharge installee sous une semaine en Essonne";
+    ? `Votre borne de recharge installée sous une semaine à ${cityInQuery}`
+    : "Votre borne de recharge installée sous une semaine en Île-de-France";
 
   const progress = Math.round((step / TOTAL_STEPS) * 100);
 
@@ -241,7 +241,7 @@ export default function BorneRechargeEssonne() {
   const validateStep = (targetStep: QuizStep): boolean => {
     if (targetStep === 1) {
       if (!form.housingType) {
-        setStepError("Selectionnez votre type de logement pour continuer.");
+        setStepError("Sélectionnez votre type de logement pour continuer.");
         return false;
       }
       return true;
@@ -249,7 +249,7 @@ export default function BorneRechargeEssonne() {
 
     if (targetStep === 2) {
       if (!form.installationPlace) {
-        setStepError("Selectionnez si l'installation est en interieur ou exterieur.");
+        setStepError("Sélectionnez si l'installation est en intérieur ou extérieur.");
         return false;
       }
       if (!/^\d{5}$/.test(form.postalCode.trim())) {
@@ -296,12 +296,12 @@ export default function BorneRechargeEssonne() {
     }
 
     if (!form.fullName.trim() || !form.phone.trim() || !form.email.trim()) {
-      setSubmitError("Renseignez nom, telephone et email pour recevoir le devis.");
+      setSubmitError("Renseignez nom, téléphone et email pour recevoir le devis.");
       return;
     }
 
     if (!/^[\d\s+()-]{8,20}$/.test(form.phone.trim())) {
-      setSubmitError("Entrez un numero de telephone valide.");
+      setSubmitError("Entrez un numéro de téléphone valide.");
       return;
     }
 
@@ -324,7 +324,7 @@ export default function BorneRechargeEssonne() {
     payload.set("subject", "Lead LP IRVE IDF - Quiz CRO");
     payload.set("from_name", form.fullName.trim());
     payload.set("service", "borne-recharge-irve");
-    payload.set("zone", cityInQuery ? `Ile-de-France - ${cityInQuery}` : "Ile-de-France");
+    payload.set("zone", cityInQuery ? `Île-de-France - ${cityInQuery}` : "Île-de-France");
     payload.set("source", "landing-irve-idf-quiz");
     payload.set("page", pageUrl);
     payload.set("botcheck", form.honeypot);
@@ -340,9 +340,9 @@ export default function BorneRechargeEssonne() {
         `Lieu d'installation: ${form.installationPlace}`,
         `Code postal: ${form.postalCode.trim()}`,
         `Nom: ${form.fullName.trim()}`,
-        `Telephone: ${form.phone.trim()}`,
+        `Téléphone: ${form.phone.trim()}`,
         `Email: ${form.email.trim()}`,
-        `Ville DKI: ${cityInQuery || "non renseignee"}`,
+        `Ville DKI: ${cityInQuery || "non renseignée"}`,
       ].join("\n"),
     );
 
@@ -379,7 +379,7 @@ export default function BorneRechargeEssonne() {
     <div className="lp-irve-dark min-h-screen bg-zinc-950 text-white">
       <SEOHead
         title="Borne de recharge IRVE IDF - JM-ELEC"
-        description="Installation borne de recharge IRVE en Ile-de-France. Devis gratuit, installation sous une semaine, accompagnement par installateur certifie."
+        description="Installation borne de recharge IRVE en Île-de-France. Devis gratuit, installation sous une semaine, accompagnement par installateur certifié."
         canonical="https://jm-elec.fr/borne-recharge-essonne"
         ogImage="https://jm-elec.fr/images/realisations/borne-jmelec-autel.png"
       />
@@ -392,7 +392,7 @@ export default function BorneRechargeEssonne() {
             <div className="hidden sm:block">
               <p className="text-sm font-semibold text-white">JM-ELEC 91</p>
               <p className="text-xs text-zinc-400">
-                Installateur IRVE certifie - Intervention IDF
+                Installateur IRVE certifié - Intervention IDF
               </p>
             </div>
           </div>
@@ -419,27 +419,27 @@ export default function BorneRechargeEssonne() {
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:items-start">
               <div>
                 <p className="inline-flex rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1 text-xs font-semibold tracking-[0.14em] text-zinc-300">
-                  INSTALLATION IRVE EN ILE-DE-FRANCE
+                  INSTALLATION IRVE EN ÎLE-DE-FRANCE
                 </p>
                 <h1 className="mt-6 max-w-xl text-4xl font-bold leading-tight md:text-6xl">
                   {heroTitle}
                 </h1>
                 <p className="mt-4 max-w-xl text-lg text-zinc-300">
-                  Devis gratuit et transparent sous 24h. Places limitees pour une
+                  Devis gratuit et transparent sous 24h. Places limitées pour une
                   installation cette semaine.
                 </p>
                 <ul className="mt-7 space-y-3 text-zinc-300">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-yellow-400" />
-                    Plus de 200 bornes installees en maison individuelle.
+                    Plus de 200 bornes installées en maison individuelle.
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-yellow-400" />
-                    Delai moyen de pose: moins de 7 jours.
+                    Délai moyen de pose: moins de 7 jours.
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-yellow-400" />
-                    Marques installees: {brands.join(", ")}.
+                    Marques installées: {brands.join(", ")}.
                   </li>
                 </ul>
 
@@ -471,7 +471,7 @@ export default function BorneRechargeEssonne() {
                 {submitted ? (
                   <div className="rounded-2xl border border-yellow-400/35 bg-zinc-950 p-6 text-center">
                     <CheckCircle2 className="mx-auto h-10 w-10 text-yellow-400" />
-                    <h2 className="mt-3 text-2xl font-semibold">Demande envoyee</h2>
+                    <h2 className="mt-3 text-2xl font-semibold">Demande envoyée</h2>
                     <p className="mt-3 text-zinc-300">
                       Merci. Un expert vous recontacte sous 24h avec un chiffrage clair.
                     </p>
@@ -487,7 +487,7 @@ export default function BorneRechargeEssonne() {
                   <form onSubmit={submitLead} noValidate>
                     <div className="mb-5">
                       <div className="mb-2 flex items-center justify-between text-xs text-zinc-400">
-                        <span>Etape {step} sur 3</span>
+                        <span>Étape {step} sur 3</span>
                         <span>{progress}%</span>
                       </div>
                       <div className="h-2 rounded-full bg-zinc-800">
@@ -537,7 +537,7 @@ export default function BorneRechargeEssonne() {
                         {step === 2 && (
                           <div>
                             <h2 className="text-2xl font-bold leading-tight">
-                              Ou se situe l&apos;installation ?
+                              Où se situe l&apos;installation ?
                             </h2>
                             <div className="mt-4 grid grid-cols-2 gap-3">
                               {installationOptions.map((option) => (
@@ -551,7 +551,7 @@ export default function BorneRechargeEssonne() {
                             </div>
 
                             <label className="mt-4 block text-sm font-medium text-zinc-300">
-                              Code Postal
+                              Code postal
                               <input
                                 inputMode="numeric"
                                 autoComplete="postal-code"
@@ -589,7 +589,7 @@ export default function BorneRechargeEssonne() {
                         {step === 3 && (
                           <div>
                             <h2 className="text-2xl font-bold leading-tight">
-                              Derniere etape ! Nous preparons votre chiffrage.
+                              Dernière étape ! Nous préparons votre chiffrage.
                             </h2>
                             <div className="mt-4 grid grid-cols-1 gap-3">
                               <div className="hidden" aria-hidden="true">
@@ -602,7 +602,7 @@ export default function BorneRechargeEssonne() {
                                 />
                               </div>
                               <label className="text-sm font-medium text-zinc-300">
-                                Prenom / Nom
+                                Prénom / Nom
                                 <input
                                   autoComplete="name"
                                   value={form.fullName}
@@ -613,7 +613,7 @@ export default function BorneRechargeEssonne() {
                                 />
                               </label>
                               <label className="text-sm font-medium text-zinc-300">
-                                Telephone
+                                Téléphone
                                 <input
                                   autoComplete="tel"
                                   value={form.phone}
@@ -662,9 +662,9 @@ export default function BorneRechargeEssonne() {
                                 to="/politique-de-confidentialite"
                                 className="underline hover:text-zinc-200"
                               >
-                                politique de confidentialite
+                                politique de confidentialité
                               </Link>
-                              . Donnees securisees.
+                              . Données sécurisées.
                             </p>
                           </div>
                         )}
@@ -682,17 +682,17 @@ export default function BorneRechargeEssonne() {
 
         <section className="bg-zinc-900 py-12">
           <div className="wide-container grid grid-cols-2 gap-4 md:grid-cols-4">
-            <MetricCard title="Sous 1 semaine" subtitle="delai moyen de pose" />
-            <MetricCard title="24h" subtitle="devis clair et detaille" />
-            <MetricCard title="200+" subtitle="bornes installees en IDF" />
-            <MetricCard title="5/5" subtitle="avis Google verifiables" />
+            <MetricCard title="Sous 1 semaine" subtitle="délai moyen de pose" />
+            <MetricCard title="24h" subtitle="devis clair et détaillé" />
+            <MetricCard title="200+" subtitle="bornes installées en IDF" />
+            <MetricCard title="5/5" subtitle="avis Google vérifiables" />
           </div>
         </section>
 
         <section className="wide-container py-16 md:py-20">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-3xl font-bold md:text-5xl">
-              Chantiers recents en <span className="text-yellow-400">Essonne</span>
+              Chantiers récents en <span className="text-yellow-400">Île-de-France</span>
             </h2>
             <a
               href={`tel:${CALL_PHONE}`}
@@ -703,8 +703,8 @@ export default function BorneRechargeEssonne() {
             </a>
           </div>
           <p className="mt-4 max-w-2xl text-zinc-400">
-            Photos reelles et recentes de nos installations. Chaque chantier est realise
-            par un electricien certifie IRVE.
+            Photos réelles et récentes de nos installations. Chaque chantier est réalisé
+            par un électricien certifié IRVE.
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -737,11 +737,11 @@ export default function BorneRechargeEssonne() {
                 rel="noreferrer noopener"
                 className="inline-flex min-h-12 items-center rounded-lg border border-zinc-700 px-4 text-sm font-semibold text-zinc-200 hover:border-zinc-500"
               >
-                Note verifiee: <span className="ml-2 text-yellow-400">5/5 sur Google</span>
+                Note vérifiée: <span className="ml-2 text-yellow-400">5/5 sur Google</span>
               </a>
             </div>
             <p className="mt-4 text-zinc-400">
-              Cliquez sur la note pour verifier les avis directement sur Google.
+              Cliquez sur la note pour vérifier les avis directement sur Google.
             </p>
 
             <div className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-950 p-4 md:p-5">
@@ -758,7 +758,7 @@ export default function BorneRechargeEssonne() {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <div>
                 <h2 className="text-3xl font-bold md:text-4xl">
-                  Zone d&apos;intervention: toute l&apos;Ile-de-France
+                  Zone d&apos;intervention: toute l&apos;Île-de-France
                 </h2>
                 <p className="mt-3 text-zinc-400">
                   Paris (75), Seine-et-Marne (77), Yvelines (78), Essonne (91),
@@ -779,13 +779,13 @@ export default function BorneRechargeEssonne() {
               <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
                 <div className="flex items-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-yellow-400" />
-                  <p className="font-semibold text-white">Reassurance immediate</p>
+                  <p className="font-semibold text-white">Réassurance immédiate</p>
                 </div>
                 <ul className="mt-4 space-y-3 text-sm text-zinc-300">
                   <li>- Intervention sous une semaine selon planning.</li>
-                  <li>- Devis detaille sous 24h.</li>
-                  <li>- TVA 5,5% pour la maison individuelle (eligibilite legale).</li>
-                  <li>- Accompagnement du premier appel a la mise en service.</li>
+                  <li>- Devis détaillé sous 24h.</li>
+                  <li>- TVA 5,5% pour la maison individuelle (éligibilité légale).</li>
+                  <li>- Accompagnement du premier appel à la mise en service.</li>
                 </ul>
                 <a
                   href="#configurateur"
@@ -806,7 +806,7 @@ export default function BorneRechargeEssonne() {
             <div>
               <img src={logoLight} alt="JM-ELEC" className="h-8 w-auto" />
               <p className="mt-3 text-sm text-zinc-400">
-                Installateur IRVE certifie en Ile-de-France.
+                Installateur IRVE certifié en Île-de-France.
               </p>
             </div>
             <div>
@@ -815,7 +815,7 @@ export default function BorneRechargeEssonne() {
               <p className="text-sm text-zinc-300">contact@jm-elec.fr</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Acces direct</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Accès direct</p>
               <ul className="mt-2 space-y-1 text-sm text-zinc-300">
                 <li>
                   <a href="#configurateur" className="hover:text-white">
@@ -841,16 +841,16 @@ export default function BorneRechargeEssonne() {
               </ul>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Legal</p>
+              <p className="text-xs uppercase tracking-[0.14em] text-zinc-400">Légal</p>
               <ul className="mt-2 space-y-1 text-sm text-zinc-300">
                 <li>
                   <Link to="/mentions-legales" className="hover:text-white">
-                    Mentions legales
+                    Mentions légales
                   </Link>
                 </li>
                 <li>
                   <Link to="/politique-de-confidentialite" className="hover:text-white">
-                    Politique de confidentialite
+                    Politique de confidentialité
                   </Link>
                 </li>
                 <li>
