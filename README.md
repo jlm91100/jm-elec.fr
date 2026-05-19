@@ -64,6 +64,15 @@ Le site peut envoyer des statistiques d'audience Google Analytics 4 uniquement a
 
 Si la variable est vide, aucun script Google Analytics n'est charge.
 
+## Meta Pixel (optionnel)
+
+Le site peut aussi envoyer des evenements Meta (Facebook) uniquement apres acceptation des cookies.
+
+1. Ajoutez `VITE_META_PIXEL_ID` dans `.env` (local) ou Vercel (Production/Preview)
+2. Redeployez l'application
+
+Si la variable est vide, aucun script Meta Pixel n'est charge.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).

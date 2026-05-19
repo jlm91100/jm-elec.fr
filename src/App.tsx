@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { MetaPixel } from "@/components/MetaPixel";
 
 import Index from "./pages/Index";
 import Services from "./pages/Services";
@@ -23,6 +24,7 @@ import FAQ from "./pages/FAQ";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
 import Tarifs from "./pages/Tarifs";
+import BorneRechargeEssonne from "./pages/BorneRechargeEssonne";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +36,7 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <GoogleAnalytics />
+        <MetaPixel />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/services" element={<Services />} />
@@ -52,6 +55,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogArticle />} />
           <Route path="/tarifs" element={<Tarifs />} />
+          <Route path="/borne-recharge-essonne" element={<BorneRechargeEssonne />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

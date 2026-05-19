@@ -123,6 +123,23 @@
   select.form-input {
     @apply appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M6%208L1%203h10z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:12px] bg-[right_16px_center] bg-no-repeat pr-10;
   }
+
+  /* Dedicated dark theme for the IRVE landing page */
+  .lp-irve-dark {
+    @apply bg-[#070707] text-white;
+  }
+
+  .lp-irve-dark h1,
+  .lp-irve-dark h2,
+  .lp-irve-dark h3,
+  .lp-irve-dark h4,
+  .lp-irve-dark h5,
+  .lp-irve-dark h6 {
+    color: rgba(255, 255, 255, 1);
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
 }
 
 @layer utilities {

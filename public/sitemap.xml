@@ -61,6 +61,7 @@
   <url><loc>https://jm-elec.fr/avis</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jm-elec.fr/a-propos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://jm-elec.fr/contact</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://jm-elec.fr/borne-recharge-essonne</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://jm-elec.fr/faq</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jm-elec.fr/tarifs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://jm-elec.fr/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
