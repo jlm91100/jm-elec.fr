@@ -16,6 +16,7 @@ import logoLight from "@/assets/logo-jm-elec.png";
 
 const CONSENT_KEY = "jm-cookie-consent";
 const LANDING_ID = "lp_irve_essonne";
+const GOOGLE_ADS_ID = "AW-16619605105";
 const FALLBACK_PHONE = "07 67 97 38 48";
 const CALL_PHONE = "+33767973848";
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
@@ -24,9 +25,12 @@ const WHATSAPP_MESSAGE =
   "Bonjour, je souhaite vous envoyer une photo de mon tableau électrique pour vérifier la faisabilité de mon projet.";
 
 type TrackingWindow = Window & {
+  dataLayer?: unknown[];
   gtag?: (...args: unknown[]) => void;
   fbq?: (...args: unknown[]) => void;
 };
+
+let googleAdsTagInitialized = false;
 
 type Web3FormsResponse = {
   success?: boolean;
@@ -101,6 +105,36 @@ const brands = [
 function hasTrackingConsent() {
   if (typeof window === "undefined") return false;
   return localStorage.getItem(CONSENT_KEY) === "accepted";
+}
+
+function ensureGoogleAdsTag() {
+  if (typeof window === "undefined") return;
+
+  const trackingWindow = window as TrackingWindow;
+  trackingWindow.dataLayer = trackingWindow.dataLayer || [];
+
+  if (!trackingWindow.gtag) {
+    trackingWindow.gtag = (...args: unknown[]) => {
+      trackingWindow.dataLayer?.push(args);
+    };
+  }
+
+  const existingTagScript = document.querySelector(
+    'script[src*="https://www.googletagmanager.com/gtag/js?id="]',
+  );
+
+  if (!existingTagScript) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`;
+    document.head.appendChild(script);
+  }
+
+  if (googleAdsTagInitialized) return;
+
+  trackingWindow.gtag("js", new Date());
+  trackingWindow.gtag("config", GOOGLE_ADS_ID);
+  googleAdsTagInitialized = true;
 }
 
 function trackLeadSuccess() {
@@ -200,6 +234,7 @@ export default function BorneRechargeEssonne() {
 
   useEffect(() => {
     ensureEmbedSocialWidgets();
+    ensureGoogleAdsTag();
   }, []);
 
   const pageUrl = useMemo(() => {
