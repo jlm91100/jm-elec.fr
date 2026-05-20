@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
-import { MetaPixel } from "@/components/MetaPixel";
 
 import Index from "./pages/Index";
 import Services from "./pages/Services";
@@ -36,7 +35,6 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <GoogleAnalytics />
-        <MetaPixel />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/services" element={<Services />} />
